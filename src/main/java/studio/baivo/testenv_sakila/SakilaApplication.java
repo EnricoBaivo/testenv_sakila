@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TestenvSakilaApplication {
+public class SakilaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TestenvSakilaApplication.class, args);
+        SpringApplication.run(SakilaApplication.class, args);
     }
 
 }
