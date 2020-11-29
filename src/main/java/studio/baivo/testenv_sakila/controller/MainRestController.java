@@ -1,4 +1,4 @@
-package studio.baivo.testenv_sakila.accessingdataPostgresSql;
+package studio.baivo.testenv_sakila.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
