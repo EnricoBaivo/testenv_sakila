@@ -18,9 +18,9 @@
 
 <body>
 <!-- bereich für alle funktionen -->
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col">
             <h1> Film datenbank Overview a</h1>
             <!-- bereich wo suchen vollzogen werden können 😊 -->
             <div class="search">
@@ -32,8 +32,10 @@
                     <!-- Den store wo man gerne einen Artikel ausleihen will.  -->
                     <label for="sucheImStore">In deinem Store🏡:</label>
                     <input class="form-control" type="text" id="sucheImStore" name="sucheImStore" placeholder="Stadt">
+            
                     <input class="form-control" type="button" id="aufsteigendSortiert" value="aufsteigend">
                     <input class="form-control" type="button" id="absteigenSortiert" value="absteigend">
+
                     <!-- schicke anfrage an server -->
                     <input type="submit" value="Submit" class="btn btn-success">
                 </form>
@@ -44,7 +46,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mt-5">
         <!-- bereich wo der Inhalt von der jeweiligen anfrage aufkommt -->
         <div class="col">
             <table class="table table-striped">
