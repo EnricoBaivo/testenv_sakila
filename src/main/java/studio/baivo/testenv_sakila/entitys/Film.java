@@ -1,4 +1,4 @@
-package studio.baivo.testenv_sakila.accessingdataPostgresSql;
+package studio.baivo.testenv_sakila.entitys;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

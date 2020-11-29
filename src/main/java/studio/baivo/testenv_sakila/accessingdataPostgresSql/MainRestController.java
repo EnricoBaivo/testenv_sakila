@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import studio.baivo.testenv_sakila.Repository.FilmRepository;
+import studio.baivo.testenv_sakila.entitys.Film;
 
-
+//https://www.youtube.com/watch?v=ijnIgreiNHU&list=PLs5n5nYB22fIVO1nSiNoUTHIbQujdHYuC&index=1
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/demo") // This means URL's start with /demo (after Application path)
 public class MainRestController {
@@ -29,9 +31,15 @@ public class MainRestController {
         return "Saved"+ name + description;
     }
 
-    @GetMapping(path="/all")
+    @GetMapping(path="/start/all")
     public @ResponseBody Iterable<Film> getAllFilms() {
         // This returns a JSON or XML with the users
         return filmRepository.findAll();
+    }
+    @GetMapping(path="/start")
+//    https://www.youtube.com/watch?v=UIetMLyDVjQ
+    public String start() {
+        // This returns a JSON or XML with the users
+        return "start";
     }
 }

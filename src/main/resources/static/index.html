@@ -1,1 +1,53 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta content="width=device-width,initial-scale=1"name="viewport"><title>Sakila Graalvm Controler</title><link href="/css/main.min.css"rel="stylesheet"><script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script></head><body><div class="container-column center flex full"><div class="container grey container-column request-area"><h1>Film datenbank Overview</h1><div class="coulumn search"><form action=""method="get"><label for="sucheNach">Suche nach verfügbaren titel 🔍:</label> <input type="text"id="sucheNach"name="sucheNach"placeholder="zb. Filme, Store, Kunden"> <label for="sucheImStore">In deinem Store🏡:</label> <input type="text"id="sucheImStore"name="sucheImStore"placeholder="Stadt"> <input type="button"id="aufsteigendSortiert"value="aufsteigend"> <input type="button"id="aufsteigendSortiert"value="absteigend"> <input type="submit"value="Submit"></form></div><div class="filter-header"></div></div><div class="container grey requestResponse"><h3>test area</h3><p class="greeting-id">The ID is</p><p class="greeting-content">The content is</p><table></table></div></div><script src="js/main.min.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sakila Graalvm Controler</title>
+    <link rel="stylesheet" href="/css/main.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="./ js/main.min.js"></script>
+
+</head>
+
+<body>
+    <!-- bereich für alle funktionen -->
+    <div class="full flex center container-column">
+        <div class="request-area grey container container-column">
+            <h1> Film datenbank Overview</h1>
+            <!-- bereich wo suchen vollzogen werden können 😊 -->
+            <div class="coulumn search">
+                <form action="" method="get">
+                    <!-- suche nach verfügbaren Titel evtl. oder auch nur in speziellen store verfügbar -->
+                    <label for="sucheNach">Suche nach verfügbaren titel 🔍:</label>
+                    <input type="text" id="sucheNach" name="sucheNach" placeholder="zb. Filme, Store, Kunden">
+                    <!-- Den store wo man gerne einen Artikel ausleihen will.  -->
+                    <label for="sucheImStore">In deinem Store🏡:</label>
+                    <input type="text" id="sucheImStore" name="sucheImStore" placeholder="Stadt">
+                    <input type="button" id="aufsteigendSortiert" value="aufsteigend">
+                    <input type="button" id="absteigenSortiert" value="absteigend">
+                    <!-- schicke anfrage an server -->
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+            <!-- filtern nach kriterien -->
+            <div class="filter-header">
+
+            </div>
+        </div>
+
+
+        <!-- bereich wo der Inhalt von der jeweiligen anfrage aufkommt -->
+        <div class="container requestResponse grey">
+            <h3>test area</h3>
+            <p class="greeting-id">The ID is </p>
+            <p class="greeting-content">The content is </p>
+            <table>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>
