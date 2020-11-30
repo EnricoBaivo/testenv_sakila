@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.*;
 // globally set up Response body
 @ResponseBody
 // every Request lives under root/trolling/...
-@RequestMapping("trolling")
+@RequestMapping(path="trolling")
 public class HelloController {
+
     //    Handles request at path party
-    @GetMapping("party")
+//    @GetMapping("party")
 //    @ResponseBody
-    public String party() {
-        return "<script>alert('LETTS GOOOO, PARTY 🥳🎉🎉!')</script>";
-    }
+//     public String party() {
+//        return "<script>alert('LETTS GOOOO, PARTY 🥳🎉🎉!')</script>";
+//    }
 
     //    Handles request at path goodbye
     @GetMapping("goodbye")
@@ -47,14 +48,13 @@ public class HelloController {
     }
 
     //    Handels both get and post request uses Dynamic Templates and The Model
-    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "hello")
+    @RequestMapping(value = "party", method = {RequestMethod.GET, RequestMethod.POST})
     //   @ResponseBody
-    public String helloRequestMappingModel(@RequestParam String name, Model model) {
+    public String partyRequestMappingModel(@RequestParam String name, Model model) {
 
-        String greeting = "Hello, " + name + "!";
-
-        model.addAttribute("greeting", greeting);
-        return "Hello, " + name + "!";
+        String party = "Hello, " + name + "Let do a party!";
+        model.addAttribute("party", party);
+        return "indexTemplate";
     }
 
     @GetMapping("form")

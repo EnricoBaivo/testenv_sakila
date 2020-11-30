@@ -39,7 +39,6 @@ public class MainRestController {
     @GetMapping(path="/start")
 //    https://www.youtube.com/watch?v=UIetMLyDVjQ
     public String start() {
-        // This returns a JSON or XML with the users
-        return "start";
+          return "start";
     }
 }
