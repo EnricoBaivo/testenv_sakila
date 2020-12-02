@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="SakilaOracleJpaHibernate">
+		<class>de.hsrm.wp.graalvm.springboot.entity.Actor</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.ActorInfo</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.Address</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.Category</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.City</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.Country</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.Customer</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.CustomerList</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.Film</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.FilmActor</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.FilmActorPK</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.FilmCategory</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.FilmCategoryPK</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.FilmList</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.FilmText</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.Inventory</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.Language</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.Payment</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.Rental</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.SalesByFilmCategory</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.SalesByStore</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.Staff</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.StaffList</class>
+		<class>de.hsrm.wp.graalvm.springboot.entity.Store</class>
+	</persistence-unit>
+</persistence>
