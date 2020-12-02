@@ -2,11 +2,7 @@ package studio.baivo.testenv_sakila.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import studio.baivo.testenv_sakila.Repository.FilmRepository;
 import studio.baivo.testenv_sakila.entitys.Film;
 
@@ -34,8 +30,24 @@ public class MainRestController {
     @GetMapping(path="/start/all")
     public @ResponseBody Iterable<Film> getAllFilms() {
         // This returns a JSON or XML with the users
+        // Select * from film
         return filmRepository.findAll();
     }
+
+    @GetMapping(path="/start/find/{filmTitle}")
+    public @ResponseBody Iterable<Film> findFilmTitle(@PathVariable String filmTitle) {
+        // This returns a JSON or XML with the users
+        // Select * from film
+        return filmRepository.getFilmsByTitle(filmTitle);
+    }
+
+    @GetMapping(path="/start/find/like/{filmTitle}")
+    public @ResponseBody Iterable<Film> findFilmTitleLike(@PathVariable String filmTitle) {
+        // This returns a JSON or XML with the users
+        // Select * from film
+        return filmRepository.hahaha(filmTitle);
+    }
+
     @GetMapping(path="/start")
 //    https://www.youtube.com/watch?v=UIetMLyDVjQ
     public String start() {

@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.*;
 // globally set up Response body
 @ResponseBody
 // every Request lives under root/trolling/...
-@RequestMapping(path="trolling")
+@RequestMapping("trolling")
 public class HelloController {
 
     //    Handles request at path party
-//    @GetMapping("party")
-//    @ResponseBody
-//     public String party() {
-//        return "<script>alert('LETTS GOOOO, PARTY 🥳🎉🎉!')</script>";
-//    }
+    //    @GetMapping("party")
+    //    @ResponseBody
+    //     public String party() {
+    //        return "<script>alert('LETTS GOOOO, PARTY 🥳🎉🎉!')</script>";
+    //    }
 
     //    Handles request at path goodbye
     @GetMapping("goodbye")
-//    @ResponseBody
+    //    @ResponseBody
     public String goobye() {
         return "Hello, Sprint!";
     }
@@ -34,7 +34,7 @@ public class HelloController {
     }
 
     //    Handels request of the form /hello/LaunchCode
-    @GetMapping("Hello/{name}")
+    @GetMapping("hello/{name}")
 //    @ResponseBody
     public String helloWithPathParam(@PathVariable String name) {
         return "Hello, " + name + "!";
@@ -54,13 +54,14 @@ public class HelloController {
 
         String party = "Hello, " + name + "Let do a party!";
         model.addAttribute("party", party);
+        //returns a Template in this case templates/indexTemplate.html
         return "indexTemplate";
     }
 
     @GetMapping("form")
-//    @ResponseBody
+    //    @ResponseBody
     public String helloForm() {
-//        returns html bullshit
+    //        returns html bullshit
         return "<script>alert('Hello');</script>";
 
     }
