@@ -1,8 +1,12 @@
 
 
 Startet den Dockercontainer mit der Datenbank sakilia 
-
+old
 docker run -p 5432:5432 syntegris/sakila-postgresql:12.4
+new
+docker run -p
+5432:5432 syntegris/sakila-postgresql:12.5
+
 
 Port auf 5432
 

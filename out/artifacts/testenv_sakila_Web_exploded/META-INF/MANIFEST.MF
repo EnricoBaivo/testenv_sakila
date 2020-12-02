@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: ebono
+Build-Jdk: 11.0.9
+Implementation-Title: testenv_sakila
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: studio.baivo
+Main-Class: ${start-class}
+

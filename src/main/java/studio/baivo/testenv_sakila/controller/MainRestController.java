@@ -33,19 +33,19 @@ public class MainRestController {
         return filmRepository.findAll();
     }
 
-    @GetMapping(path="/start/find/{filmTitle}")
-    public @ResponseBody Iterable<Film> findFilmTitle(@PathVariable String filmTitle) {
-        // This returns a JSON or XML with the users
-        // Select * from film
-        return filmRepository.getFilmsByTitle(filmTitle);
-    }
+//    @GetMapping(path="/start/find/{filmTitle}")
+//    public @ResponseBody Iterable<Film> findFilmTitle(@PathVariable String filmTitle) {
+//        // This returns a JSON or XML with the users
+//        // Select * from film
+//        return filmRepository.getFilmsByTitle(filmTitle);
+//    }
 
-    @GetMapping(path="/start/find/like/{filmTitle}")
-    public @ResponseBody Iterable<Film> findFilmTitleLike(@PathVariable String filmTitle) {
-        // This returns a JSON or XML with the users
-        // Select * from film
-        return filmRepository.hahaha(filmTitle);
-    }
+//    @GetMapping(path="/start/find/like/{filmTitle}")
+//    public @ResponseBody Iterable<Film> findFilmTitleLike(@PathVariable String filmTitle) {
+//        // This returns a JSON or XML with the users
+//        // Select * from film
+//        return filmRepository.hahaha(filmTitle);
+//    }
 
     @GetMapping(path="/start")
 //    https://www.youtube.com/watch?v=UIetMLyDVjQ
