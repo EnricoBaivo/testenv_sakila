@@ -1,106 +1,138 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Timestamp;
+import java.util.Objects;
 
-
-/**
- * The persistent class for the PAYMENT database table.
- * 
- */
 @Entity
-@NamedQuery(name="Payment.findAll", query="SELECT p FROM Payment p")
-public class Payment implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Payment {
+    private long paymentId;
+    private long customerId;
+    private long staffId;
+    private Long rentalId;
+    private long amount;
+    private Timestamp paymentDate;
+    private Timestamp lastUpdate;
+    private Customer customerByCustomerId;
+    private Staff staffByStaffId;
+    private Rental rentalByRentalId;
 
-	@Id
-	@Column(name="PAYMENT_ID")
-	private long paymentId;
+    @Id
+    @Column(name = "PAYMENT_ID", nullable = false, precision = 0)
+    public long getPaymentId() {
+        return paymentId;
+    }
 
-	private BigDecimal amount;
+    public void setPaymentId(long paymentId) {
+        this.paymentId = paymentId;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    @Basic
+    @Column(name = "CUSTOMER_ID", nullable = false, precision = 0)
+    public long getCustomerId() {
+        return customerId;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="PAYMENT_DATE")
-	private Date paymentDate;
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
+    }
 
-	//bi-directional many-to-one association to Customer
-	@ManyToOne
-	@JoinColumn(name="CUSTOMER_ID")
-	private Customer customer;
+    @Basic
+    @Column(name = "STAFF_ID", nullable = false, precision = 0)
+    public long getStaffId() {
+        return staffId;
+    }
 
-	//bi-directional many-to-one association to Rental
-	@ManyToOne
-	@JoinColumn(name="RENTAL_ID")
-	private Rental rental;
+    public void setStaffId(long staffId) {
+        this.staffId = staffId;
+    }
 
-	//bi-directional many-to-one association to Staff
-	@ManyToOne
-	@JoinColumn(name="STAFF_ID")
-	private Staff staff;
+    @Basic
+    @Column(name = "RENTAL_ID", nullable = true, precision = 0)
+    public Long getRentalId() {
+        return rentalId;
+    }
 
-	public Payment() {
-	}
+    public void setRentalId(Long rentalId) {
+        this.rentalId = rentalId;
+    }
 
-	public long getPaymentId() {
-		return this.paymentId;
-	}
+    @Basic
+    @Column(name = "AMOUNT", nullable = false, precision = 2)
+    public long getAmount() {
+        return amount;
+    }
 
-	public void setPaymentId(long paymentId) {
-		this.paymentId = paymentId;
-	}
+    public void setAmount(long amount) {
+        this.amount = amount;
+    }
 
-	public BigDecimal getAmount() {
-		return this.amount;
-	}
+    @Basic
+    @Column(name = "PAYMENT_DATE", nullable = false)
+    public Timestamp getPaymentDate() {
+        return paymentDate;
+    }
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
+    public void setPaymentDate(Timestamp paymentDate) {
+        this.paymentDate = paymentDate;
+    }
 
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = false)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public Date getPaymentDate() {
-		return this.paymentDate;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Payment payment = (Payment) o;
+        return paymentId == payment.paymentId &&
+                customerId == payment.customerId &&
+                staffId == payment.staffId &&
+                amount == payment.amount &&
+                Objects.equals(rentalId, payment.rentalId) &&
+                Objects.equals(paymentDate, payment.paymentDate) &&
+                Objects.equals(lastUpdate, payment.lastUpdate);
+    }
 
-	public void setPaymentDate(Date paymentDate) {
-		this.paymentDate = paymentDate;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(paymentId, customerId, staffId, rentalId, amount, paymentDate, lastUpdate);
+    }
 
-	public Customer getCustomer() {
-		return this.customer;
-	}
+    @ManyToOne
+    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID", nullable = false)
+    public Customer getCustomerByCustomerId() {
+        return customerByCustomerId;
+    }
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
+    public void setCustomerByCustomerId(Customer customerByCustomerId) {
+        this.customerByCustomerId = customerByCustomerId;
+    }
 
-	public Rental getRental() {
-		return this.rental;
-	}
+    @ManyToOne
+    @JoinColumn(name = "STAFF_ID", referencedColumnName = "STAFF_ID", nullable = false)
+    public Staff getStaffByStaffId() {
+        return staffByStaffId;
+    }
 
-	public void setRental(Rental rental) {
-		this.rental = rental;
-	}
+    public void setStaffByStaffId(Staff staffByStaffId) {
+        this.staffByStaffId = staffByStaffId;
+    }
 
-	public Staff getStaff() {
-		return this.staff;
-	}
+    @ManyToOne
+    @JoinColumn(name = "RENTAL_ID", referencedColumnName = "RENTAL_ID")
+    public Rental getRentalByRentalId() {
+        return rentalByRentalId;
+    }
 
-	public void setStaff(Staff staff) {
-		this.staff = staff;
-	}
-
+    public void setRentalByRentalId(Rental rentalByRentalId) {
+        this.rentalByRentalId = rentalByRentalId;
+    }
 }

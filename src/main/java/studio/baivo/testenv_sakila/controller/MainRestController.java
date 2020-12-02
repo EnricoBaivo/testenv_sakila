@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import studio.baivo.testenv_sakila.Repository.FilmRepository;
-import studio.baivo.testenv_sakila.entitys.Film;
 
 //https://www.youtube.com/watch?v=ijnIgreiNHU&list=PLs5n5nYB22fIVO1nSiNoUTHIbQujdHYuC&index=1
 @Controller // This means that this class is a Controller

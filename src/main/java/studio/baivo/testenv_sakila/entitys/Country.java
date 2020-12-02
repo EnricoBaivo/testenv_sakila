@@ -1,81 +1,68 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Objects;
 
-
-/**
- * The persistent class for the COUNTRY database table.
- * 
- */
 @Entity
-@NamedQuery(name="Country.findAll", query="SELECT c FROM Country c")
-public class Country implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Country {
+    private long countryId;
+    private String country;
+    private Timestamp lastUpdate;
+    private Collection<City> citiesByCountryId;
 
-	@Id
-	@Column(name="COUNTRY_ID")
-	private long countryId;
+    @Id
+    @Column(name = "COUNTRY_ID", nullable = false, precision = 0)
+    public long getCountryId() {
+        return countryId;
+    }
 
-	private String country;
+    public void setCountryId(long countryId) {
+        this.countryId = countryId;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    @Basic
+    @Column(name = "COUNTRY", nullable = false, length = 50)
+    public String getCountry() {
+        return country;
+    }
 
-	//bi-directional many-to-one association to City
-	@OneToMany(mappedBy="country")
-	private List<City> cities;
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-	public Country() {
-	}
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = true)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public long getCountryId() {
-		return this.countryId;
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public void setCountryId(long countryId) {
-		this.countryId = countryId;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Country country1 = (Country) o;
+        return countryId == country1.countryId &&
+                Objects.equals(country, country1.country) &&
+                Objects.equals(lastUpdate, country1.lastUpdate);
+    }
 
-	public String getCountry() {
-		return this.country;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(countryId, country, lastUpdate);
+    }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+    @OneToMany(mappedBy = "countryByCountryId")
+    public Collection<City> getCitiesByCountryId() {
+        return citiesByCountryId;
+    }
 
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-
-	public List<City> getCities() {
-		return this.cities;
-	}
-
-	public void setCities(List<City> cities) {
-		this.cities = cities;
-	}
-
-	public City addCity(City city) {
-		getCities().add(city);
-		city.setCountry(this);
-
-		return city;
-	}
-
-	public City removeCity(City city) {
-		getCities().remove(city);
-		city.setCountry(null);
-
-		return city;
-	}
-
+    public void setCitiesByCountryId(Collection<City> citiesByCountryId) {
+        this.citiesByCountryId = citiesByCountryId;
+    }
 }

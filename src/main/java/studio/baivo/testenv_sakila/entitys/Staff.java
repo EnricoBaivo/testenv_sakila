@@ -1,223 +1,209 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
 
-
-/**
- * The persistent class for the STAFF database table.
- * 
- */
 @Entity
-@NamedQuery(name="Staff.findAll", query="SELECT s FROM Staff s")
-public class Staff implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Staff {
+    private long staffId;
+    private String firstName;
+    private String lastName;
+    private long addressId;
+    private byte[] picture;
+    private String email;
+    private long storeId;
+    private boolean active;
+    private String username;
+    private String password;
+    private Timestamp lastUpdate;
+    private Collection<Payment> paymentsByStaffId;
+    private Collection<Rental> rentalsByStaffId;
+    private Address addressByAddressId;
+    private Store storeByStoreId;
+    private Collection<Store> storesByStaffId;
 
-	@Id
-	@Column(name="STAFF_ID")
-	private long staffId;
+    @Id
+    @Column(name = "STAFF_ID", nullable = false, precision = 0)
+    public long getStaffId() {
+        return staffId;
+    }
 
-	private BigDecimal active;
+    public void setStaffId(long staffId) {
+        this.staffId = staffId;
+    }
 
-	private String email;
+    @Basic
+    @Column(name = "FIRST_NAME", nullable = false, length = 45)
+    public String getFirstName() {
+        return firstName;
+    }
 
-	@Column(name="FIRST_NAME")
-	private String firstName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	@Column(name="LAST_NAME")
-	private String lastName;
+    @Basic
+    @Column(name = "LAST_NAME", nullable = false, length = 45)
+    public String getLastName() {
+        return lastName;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	private String password;
+    @Basic
+    @Column(name = "ADDRESS_ID", nullable = false, precision = 0)
+    public long getAddressId() {
+        return addressId;
+    }
 
-	@Lob
-	private byte[] picture;
+    public void setAddressId(long addressId) {
+        this.addressId = addressId;
+    }
 
-	private String username;
+    @Basic
+    @Column(name = "PICTURE", nullable = true)
+    public byte[] getPicture() {
+        return picture;
+    }
 
-	//bi-directional many-to-one association to Payment
-	@OneToMany(mappedBy="staff")
-	private List<Payment> payments;
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
 
-	//bi-directional many-to-one association to Rental
-	@OneToMany(mappedBy="staff")
-	private List<Rental> rentals;
+    @Basic
+    @Column(name = "EMAIL", nullable = true, length = 50)
+    public String getEmail() {
+        return email;
+    }
 
-	//bi-directional many-to-one association to Address
-	@ManyToOne
-	@JoinColumn(name="ADDRESS_ID")
-	private Address address;
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	//bi-directional many-to-one association to Store
-	@ManyToOne
-	@JoinColumn(name="STORE_ID")
-	private Store store;
+    @Basic
+    @Column(name = "STORE_ID", nullable = false, precision = 0)
+    public long getStoreId() {
+        return storeId;
+    }
 
-	//bi-directional many-to-one association to Store
-	@OneToMany(mappedBy="staff")
-	private List<Store> stores;
+    public void setStoreId(long storeId) {
+        this.storeId = storeId;
+    }
 
-	public Staff() {
-	}
+    @Basic
+    @Column(name = "ACTIVE", nullable = false, precision = 0)
+    public boolean isActive() {
+        return active;
+    }
 
-	public long getStaffId() {
-		return this.staffId;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-	public void setStaffId(long staffId) {
-		this.staffId = staffId;
-	}
+    @Basic
+    @Column(name = "USERNAME", nullable = false, length = 16)
+    public String getUsername() {
+        return username;
+    }
 
-	public BigDecimal getActive() {
-		return this.active;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setActive(BigDecimal active) {
-		this.active = active;
-	}
+    @Basic
+    @Column(name = "PASSWORD", nullable = true, length = 40)
+    public String getPassword() {
+        return password;
+    }
 
-	public String getEmail() {
-		return this.email;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = false)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public String getFirstName() {
-		return this.firstName;
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Staff staff = (Staff) o;
+        return staffId == staff.staffId &&
+                addressId == staff.addressId &&
+                storeId == staff.storeId &&
+                active == staff.active &&
+                Objects.equals(firstName, staff.firstName) &&
+                Objects.equals(lastName, staff.lastName) &&
+                Arrays.equals(picture, staff.picture) &&
+                Objects.equals(email, staff.email) &&
+                Objects.equals(username, staff.username) &&
+                Objects.equals(password, staff.password) &&
+                Objects.equals(lastUpdate, staff.lastUpdate);
+    }
 
-	public String getLastName() {
-		return this.lastName;
-	}
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(staffId, firstName, lastName, addressId, email, storeId, active, username, password, lastUpdate);
+        result = 31 * result + Arrays.hashCode(picture);
+        return result;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    @OneToMany(mappedBy = "staffByStaffId")
+    public Collection<Payment> getPaymentsByStaffId() {
+        return paymentsByStaffId;
+    }
 
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
+    public void setPaymentsByStaffId(Collection<Payment> paymentsByStaffId) {
+        this.paymentsByStaffId = paymentsByStaffId;
+    }
 
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+    @OneToMany(mappedBy = "staffByStaffId")
+    public Collection<Rental> getRentalsByStaffId() {
+        return rentalsByStaffId;
+    }
 
-	public String getPassword() {
-		return this.password;
-	}
+    public void setRentalsByStaffId(Collection<Rental> rentalsByStaffId) {
+        this.rentalsByStaffId = rentalsByStaffId;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    @ManyToOne
+    @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ADDRESS_ID", nullable = false)
+    public Address getAddressByAddressId() {
+        return addressByAddressId;
+    }
 
-	public byte[] getPicture() {
-		return this.picture;
-	}
+    public void setAddressByAddressId(Address addressByAddressId) {
+        this.addressByAddressId = addressByAddressId;
+    }
 
-	public void setPicture(byte[] picture) {
-		this.picture = picture;
-	}
+    @ManyToOne
+    @JoinColumn(name = "STORE_ID", referencedColumnName = "STORE_ID", nullable = false)
+    public Store getStoreByStoreId() {
+        return storeByStoreId;
+    }
 
-	public String getUsername() {
-		return this.username;
-	}
+    public void setStoreByStoreId(Store storeByStoreId) {
+        this.storeByStoreId = storeByStoreId;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    @OneToMany(mappedBy = "staffByManagerStaffId")
+    public Collection<Store> getStoresByStaffId() {
+        return storesByStaffId;
+    }
 
-	public List<Payment> getPayments() {
-		return this.payments;
-	}
-
-	public void setPayments(List<Payment> payments) {
-		this.payments = payments;
-	}
-
-	public Payment addPayment(Payment payment) {
-		getPayments().add(payment);
-		payment.setStaff(this);
-
-		return payment;
-	}
-
-	public Payment removePayment(Payment payment) {
-		getPayments().remove(payment);
-		payment.setStaff(null);
-
-		return payment;
-	}
-
-	public List<Rental> getRentals() {
-		return this.rentals;
-	}
-
-	public void setRentals(List<Rental> rentals) {
-		this.rentals = rentals;
-	}
-
-	public Rental addRental(Rental rental) {
-		getRentals().add(rental);
-		rental.setStaff(this);
-
-		return rental;
-	}
-
-	public Rental removeRental(Rental rental) {
-		getRentals().remove(rental);
-		rental.setStaff(null);
-
-		return rental;
-	}
-
-	public Address getAddress() {
-		return this.address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
-	public Store getStore() {
-		return this.store;
-	}
-
-	public void setStore(Store store) {
-		this.store = store;
-	}
-
-	public List<Store> getStores() {
-		return this.stores;
-	}
-
-	public void setStores(List<Store> stores) {
-		this.stores = stores;
-	}
-
-	public Store addStore(Store store) {
-		getStores().add(store);
-		store.setStaff(this);
-
-		return store;
-	}
-
-	public Store removeStore(Store store) {
-		getStores().remove(store);
-		store.setStaff(null);
-
-		return store;
-	}
-
+    public void setStoresByStaffId(Collection<Store> storesByStaffId) {
+        this.storesByStaffId = storesByStaffId;
+    }
 }

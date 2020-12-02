@@ -1,97 +1,114 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Objects;
 
-
-/**
- * The persistent class for the INVENTORY database table.
- * 
- */
 @Entity
-@NamedQuery(name="Inventory.findAll", query="SELECT i FROM Inventory i")
-public class Inventory implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Inventory {
+    private long inventoryId;
+    private long filmId;
+    private long storeId;
+    private boolean active;
+    private Timestamp lastUpdate;
+    private Film filmByFilmId;
+    private Store storeByStoreId;
+    private Collection<Rental> rentalsByInventoryId;
 
-	@Id
-	@Column(name="INVENTORY_ID")
-	private long inventoryId;
+    @Id
+    @Column(name = "INVENTORY_ID", nullable = false, precision = 0)
+    public long getInventoryId() {
+        return inventoryId;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    public void setInventoryId(long inventoryId) {
+        this.inventoryId = inventoryId;
+    }
 
-	//bi-directional many-to-one association to Film
-	@ManyToOne
-	@JoinColumn(name="FILM_ID")
-	private Film film;
+    @Basic
+    @Column(name = "FILM_ID", nullable = false, precision = 0)
+    public long getFilmId() {
+        return filmId;
+    }
 
-	//bi-directional many-to-one association to Store
-	@ManyToOne
-	@JoinColumn(name="STORE_ID")
-	private Store store;
+    public void setFilmId(long filmId) {
+        this.filmId = filmId;
+    }
 
-	//bi-directional many-to-one association to Rental
-	@OneToMany(mappedBy="inventory")
-	private List<Rental> rentals;
+    @Basic
+    @Column(name = "STORE_ID", nullable = false, precision = 0)
+    public long getStoreId() {
+        return storeId;
+    }
 
-	public Inventory() {
-	}
+    public void setStoreId(long storeId) {
+        this.storeId = storeId;
+    }
 
-	public long getInventoryId() {
-		return this.inventoryId;
-	}
+    @Basic
+    @Column(name = "ACTIVE", nullable = false, precision = 0)
+    public boolean isActive() {
+        return active;
+    }
 
-	public void setInventoryId(long inventoryId) {
-		this.inventoryId = inventoryId;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = false)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public Film getFilm() {
-		return this.film;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Inventory inventory = (Inventory) o;
+        return inventoryId == inventory.inventoryId &&
+                filmId == inventory.filmId &&
+                storeId == inventory.storeId &&
+                active == inventory.active &&
+                Objects.equals(lastUpdate, inventory.lastUpdate);
+    }
 
-	public void setFilm(Film film) {
-		this.film = film;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(inventoryId, filmId, storeId, active, lastUpdate);
+    }
 
-	public Store getStore() {
-		return this.store;
-	}
+    @ManyToOne
+    @JoinColumn(name = "FILM_ID", referencedColumnName = "FILM_ID", nullable = false)
+    public Film getFilmByFilmId() {
+        return filmByFilmId;
+    }
 
-	public void setStore(Store store) {
-		this.store = store;
-	}
+    public void setFilmByFilmId(Film filmByFilmId) {
+        this.filmByFilmId = filmByFilmId;
+    }
 
-	public List<Rental> getRentals() {
-		return this.rentals;
-	}
+    @ManyToOne
+    @JoinColumn(name = "STORE_ID", referencedColumnName = "STORE_ID", nullable = false)
+    public Store getStoreByStoreId() {
+        return storeByStoreId;
+    }
 
-	public void setRentals(List<Rental> rentals) {
-		this.rentals = rentals;
-	}
+    public void setStoreByStoreId(Store storeByStoreId) {
+        this.storeByStoreId = storeByStoreId;
+    }
 
-	public Rental addRental(Rental rental) {
-		getRentals().add(rental);
-		rental.setInventory(this);
+    @OneToMany(mappedBy = "inventoryByInventoryId")
+    public Collection<Rental> getRentalsByInventoryId() {
+        return rentalsByInventoryId;
+    }
 
-		return rental;
-	}
-
-	public Rental removeRental(Rental rental) {
-		getRentals().remove(rental);
-		rental.setInventory(null);
-
-		return rental;
-	}
-
+    public void setRentalsByInventoryId(Collection<Rental> rentalsByInventoryId) {
+        this.rentalsByInventoryId = rentalsByInventoryId;
+    }
 }

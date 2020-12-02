@@ -1,134 +1,149 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Objects;
 
-
-/**
- * The persistent class for the RENTAL database table.
- * 
- */
 @Entity
-@NamedQuery(name="Rental.findAll", query="SELECT r FROM Rental r")
-public class Rental implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Rental {
+    private long rentalId;
+    private Timestamp rentalDate;
+    private long inventoryId;
+    private long customerId;
+    private Timestamp returnDate;
+    private long staffId;
+    private Timestamp lastUpdate;
+    private Collection<Payment> paymentsByRentalId;
+    private Inventory inventoryByInventoryId;
+    private Customer customerByCustomerId;
+    private Staff staffByStaffId;
 
-	@Id
-	@Column(name="RENTAL_ID")
-	private long rentalId;
+    @Id
+    @Column(name = "RENTAL_ID", nullable = false, precision = 0)
+    public long getRentalId() {
+        return rentalId;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    public void setRentalId(long rentalId) {
+        this.rentalId = rentalId;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="RENTAL_DATE")
-	private Date rentalDate;
+    @Basic
+    @Column(name = "RENTAL_DATE", nullable = false)
+    public Timestamp getRentalDate() {
+        return rentalDate;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="RETURN_DATE")
-	private Date returnDate;
+    public void setRentalDate(Timestamp rentalDate) {
+        this.rentalDate = rentalDate;
+    }
 
-	//bi-directional many-to-one association to Payment
-	@OneToMany(mappedBy="rental")
-	private List<Payment> payments;
+    @Basic
+    @Column(name = "INVENTORY_ID", nullable = false, precision = 0)
+    public long getInventoryId() {
+        return inventoryId;
+    }
 
-	//bi-directional many-to-one association to Customer
-	@ManyToOne
-	@JoinColumn(name="CUSTOMER_ID")
-	private Customer customer;
+    public void setInventoryId(long inventoryId) {
+        this.inventoryId = inventoryId;
+    }
 
-	//bi-directional many-to-one association to Inventory
-	@ManyToOne
-	@JoinColumn(name="INVENTORY_ID")
-	private Inventory inventory;
+    @Basic
+    @Column(name = "CUSTOMER_ID", nullable = false, precision = 0)
+    public long getCustomerId() {
+        return customerId;
+    }
 
-	//bi-directional many-to-one association to Staff
-	@ManyToOne
-	@JoinColumn(name="STAFF_ID")
-	private Staff staff;
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
+    }
 
-	public Rental() {
-	}
+    @Basic
+    @Column(name = "RETURN_DATE", nullable = true)
+    public Timestamp getReturnDate() {
+        return returnDate;
+    }
 
-	public long getRentalId() {
-		return this.rentalId;
-	}
+    public void setReturnDate(Timestamp returnDate) {
+        this.returnDate = returnDate;
+    }
 
-	public void setRentalId(long rentalId) {
-		this.rentalId = rentalId;
-	}
+    @Basic
+    @Column(name = "STAFF_ID", nullable = false, precision = 0)
+    public long getStaffId() {
+        return staffId;
+    }
 
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
+    public void setStaffId(long staffId) {
+        this.staffId = staffId;
+    }
 
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = false)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public Date getRentalDate() {
-		return this.rentalDate;
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public void setRentalDate(Date rentalDate) {
-		this.rentalDate = rentalDate;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rental rental = (Rental) o;
+        return rentalId == rental.rentalId &&
+                inventoryId == rental.inventoryId &&
+                customerId == rental.customerId &&
+                staffId == rental.staffId &&
+                Objects.equals(rentalDate, rental.rentalDate) &&
+                Objects.equals(returnDate, rental.returnDate) &&
+                Objects.equals(lastUpdate, rental.lastUpdate);
+    }
 
-	public Date getReturnDate() {
-		return this.returnDate;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(rentalId, rentalDate, inventoryId, customerId, returnDate, staffId, lastUpdate);
+    }
 
-	public void setReturnDate(Date returnDate) {
-		this.returnDate = returnDate;
-	}
+    @OneToMany(mappedBy = "rentalByRentalId")
+    public Collection<Payment> getPaymentsByRentalId() {
+        return paymentsByRentalId;
+    }
 
-	public List<Payment> getPayments() {
-		return this.payments;
-	}
+    public void setPaymentsByRentalId(Collection<Payment> paymentsByRentalId) {
+        this.paymentsByRentalId = paymentsByRentalId;
+    }
 
-	public void setPayments(List<Payment> payments) {
-		this.payments = payments;
-	}
+    @ManyToOne
+    @JoinColumn(name = "INVENTORY_ID", referencedColumnName = "INVENTORY_ID", nullable = false)
+    public Inventory getInventoryByInventoryId() {
+        return inventoryByInventoryId;
+    }
 
-	public Payment addPayment(Payment payment) {
-		getPayments().add(payment);
-		payment.setRental(this);
+    public void setInventoryByInventoryId(Inventory inventoryByInventoryId) {
+        this.inventoryByInventoryId = inventoryByInventoryId;
+    }
 
-		return payment;
-	}
+    @ManyToOne
+    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID", nullable = false)
+    public Customer getCustomerByCustomerId() {
+        return customerByCustomerId;
+    }
 
-	public Payment removePayment(Payment payment) {
-		getPayments().remove(payment);
-		payment.setRental(null);
+    public void setCustomerByCustomerId(Customer customerByCustomerId) {
+        this.customerByCustomerId = customerByCustomerId;
+    }
 
-		return payment;
-	}
+    @ManyToOne
+    @JoinColumn(name = "STAFF_ID", referencedColumnName = "STAFF_ID", nullable = false)
+    public Staff getStaffByStaffId() {
+        return staffByStaffId;
+    }
 
-	public Customer getCustomer() {
-		return this.customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-
-	public Inventory getInventory() {
-		return this.inventory;
-	}
-
-	public void setInventory(Inventory inventory) {
-		this.inventory = inventory;
-	}
-
-	public Staff getStaff() {
-		return this.staff;
-	}
-
-	public void setStaff(Staff staff) {
-		this.staff = staff;
-	}
-
+    public void setStaffByStaffId(Staff staffByStaffId) {
+        this.staffByStaffId = staffByStaffId;
+    }
 }

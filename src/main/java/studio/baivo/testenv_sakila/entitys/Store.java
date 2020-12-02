@@ -1,149 +1,122 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Objects;
 
-
-/**
- * The persistent class for the STORE database table.
- * 
- */
 @Entity
-@NamedQuery(name="Store.findAll", query="SELECT s FROM Store s")
-public class Store implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Store {
+    private long storeId;
+    private long managerStaffId;
+    private long addressId;
+    private Timestamp lastUpdate;
+    private Collection<Customer> customersByStoreId;
+    private Collection<Inventory> inventoriesByStoreId;
+    private Collection<Staff> staffByStoreId;
+    private Staff staffByManagerStaffId;
+    private Address addressByAddressId;
 
-	@Id
-	@Column(name="STORE_ID")
-	private long storeId;
+    @Id
+    @Column(name = "STORE_ID", nullable = false, precision = 0)
+    public long getStoreId() {
+        return storeId;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    public void setStoreId(long storeId) {
+        this.storeId = storeId;
+    }
 
-	//bi-directional many-to-one association to Customer
-	@OneToMany(mappedBy="store")
-	private List<Customer> customers;
+    @Basic
+    @Column(name = "MANAGER_STAFF_ID", nullable = false, precision = 0)
+    public long getManagerStaffId() {
+        return managerStaffId;
+    }
 
-	//bi-directional many-to-one association to Inventory
-	@OneToMany(mappedBy="store")
-	private List<Inventory> inventories;
+    public void setManagerStaffId(long managerStaffId) {
+        this.managerStaffId = managerStaffId;
+    }
 
-	//bi-directional many-to-one association to Staff
-	@OneToMany(mappedBy="store")
-	private List<Staff> staffs;
+    @Basic
+    @Column(name = "ADDRESS_ID", nullable = false, precision = 0)
+    public long getAddressId() {
+        return addressId;
+    }
 
-	//bi-directional many-to-one association to Address
-	@ManyToOne
-	@JoinColumn(name="ADDRESS_ID")
-	private Address address;
+    public void setAddressId(long addressId) {
+        this.addressId = addressId;
+    }
 
-	//bi-directional many-to-one association to Staff
-	@ManyToOne
-	@JoinColumn(name="MANAGER_STAFF_ID")
-	private Staff staff;
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = false)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public Store() {
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public long getStoreId() {
-		return this.storeId;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Store store = (Store) o;
+        return storeId == store.storeId &&
+                managerStaffId == store.managerStaffId &&
+                addressId == store.addressId &&
+                Objects.equals(lastUpdate, store.lastUpdate);
+    }
 
-	public void setStoreId(long storeId) {
-		this.storeId = storeId;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(storeId, managerStaffId, addressId, lastUpdate);
+    }
 
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
+    @OneToMany(mappedBy = "storeByStoreId")
+    public Collection<Customer> getCustomersByStoreId() {
+        return customersByStoreId;
+    }
 
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+    public void setCustomersByStoreId(Collection<Customer> customersByStoreId) {
+        this.customersByStoreId = customersByStoreId;
+    }
 
-	public List<Customer> getCustomers() {
-		return this.customers;
-	}
+    @OneToMany(mappedBy = "storeByStoreId")
+    public Collection<Inventory> getInventoriesByStoreId() {
+        return inventoriesByStoreId;
+    }
 
-	public void setCustomers(List<Customer> customers) {
-		this.customers = customers;
-	}
+    public void setInventoriesByStoreId(Collection<Inventory> inventoriesByStoreId) {
+        this.inventoriesByStoreId = inventoriesByStoreId;
+    }
 
-	public Customer addCustomer(Customer customer) {
-		getCustomers().add(customer);
-		customer.setStore(this);
+    @OneToMany(mappedBy = "storeByStoreId")
+    public Collection<Staff> getStaffByStoreId() {
+        return staffByStoreId;
+    }
 
-		return customer;
-	}
+    public void setStaffByStoreId(Collection<Staff> staffByStoreId) {
+        this.staffByStoreId = staffByStoreId;
+    }
 
-	public Customer removeCustomer(Customer customer) {
-		getCustomers().remove(customer);
-		customer.setStore(null);
+    @ManyToOne
+    @JoinColumn(name = "MANAGER_STAFF_ID", referencedColumnName = "STAFF_ID", nullable = false)
+    public Staff getStaffByManagerStaffId() {
+        return staffByManagerStaffId;
+    }
 
-		return customer;
-	}
+    public void setStaffByManagerStaffId(Staff staffByManagerStaffId) {
+        this.staffByManagerStaffId = staffByManagerStaffId;
+    }
 
-	public List<Inventory> getInventories() {
-		return this.inventories;
-	}
+    @ManyToOne
+    @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ADDRESS_ID", nullable = false)
+    public Address getAddressByAddressId() {
+        return addressByAddressId;
+    }
 
-	public void setInventories(List<Inventory> inventories) {
-		this.inventories = inventories;
-	}
-
-	public Inventory addInventory(Inventory inventory) {
-		getInventories().add(inventory);
-		inventory.setStore(this);
-
-		return inventory;
-	}
-
-	public Inventory removeInventory(Inventory inventory) {
-		getInventories().remove(inventory);
-		inventory.setStore(null);
-
-		return inventory;
-	}
-
-	public List<Staff> getStaffs() {
-		return this.staffs;
-	}
-
-	public void setStaffs(List<Staff> staffs) {
-		this.staffs = staffs;
-	}
-
-	public Staff addStaff(Staff staff) {
-		getStaffs().add(staff);
-		staff.setStore(this);
-
-		return staff;
-	}
-
-	public Staff removeStaff(Staff staff) {
-		getStaffs().remove(staff);
-		staff.setStore(null);
-
-		return staff;
-	}
-
-	public Address getAddress() {
-		return this.address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
-	public Staff getStaff() {
-		return this.staff;
-	}
-
-	public void setStaff(Staff staff) {
-		this.staff = staff;
-	}
-
+    public void setAddressByAddressId(Address addressByAddressId) {
+        this.addressByAddressId = addressByAddressId;
+    }
 }

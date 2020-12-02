@@ -1,247 +1,233 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Set;
 
-
-/**
- * The persistent class for the FILM database table.
- * 
- */
 @Entity
-@NamedQuery(name="Film.findAll", query="SELECT f FROM Film f")
-public class Film implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Film {
+    private long filmId;
+    private String title;
+    private String description;
+    private String releaseYear;
+    private long languageId;
+    private Long originalLanguageId;
+    private long rentalDuration;
+    private long rentalRate;
+    private Long length;
+    private long replacementCost;
+    private String rating;
+    private String specialFeatures;
+    private Timestamp lastUpdate;
+    private Language languageByLanguageId;
+    private Language languageByOriginalLanguageId;
+    private Collection<Inventory> inventoriesByFilmId;
+    private Set<Actor> Actors;
+    private Set<Category> Categories;
 
-	@Id
-	@Column(name="FILM_ID")
-	private long filmId;
+    @Id
+    @Column(name = "FILM_ID", nullable = false, precision = 0)
+    public long getFilmId() {
+        return filmId;
+    }
 
-	@Lob
-	private String description;
+    public void setFilmId(long filmId) {
+        this.filmId = filmId;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    @Basic
+    @Column(name = "TITLE", nullable = false, length = 255)
+    public String getTitle() {
+        return title;
+    }
 
-	@Column(name="\"LENGTH\"")
-	private BigDecimal length;
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	private String rating;
+    @Basic
+    @Column(name = "DESCRIPTION", nullable = true)
+    public String getDescription() {
+        return description;
+    }
 
-	@Column(name="RELEASE_YEAR")
-	private String releaseYear;
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	@Column(name="RENTAL_DURATION")
-	private BigDecimal rentalDuration;
+    @Basic
+    @Column(name = "RELEASE_YEAR", nullable = true, length = 4)
+    public String getReleaseYear() {
+        return releaseYear;
+    }
 
-	@Column(name="RENTAL_RATE")
-	private BigDecimal rentalRate;
+    public void setReleaseYear(String releaseYear) {
+        this.releaseYear = releaseYear;
+    }
 
-	@Column(name="REPLACEMENT_COST")
-	private BigDecimal replacementCost;
+    @Basic
+    @Column(name = "LANGUAGE_ID", nullable = false, precision = 0)
+    public long getLanguageId() {
+        return languageId;
+    }
 
-	@Column(name="SPECIAL_FEATURES")
-	private String specialFeatures;
+    public void setLanguageId(long languageId) {
+        this.languageId = languageId;
+    }
 
-	private String title;
+    @Basic
+    @Column(name = "ORIGINAL_LANGUAGE_ID", nullable = true, precision = 0)
+    public Long getOriginalLanguageId() {
+        return originalLanguageId;
+    }
 
-	//bi-directional many-to-one association to Language
-	@ManyToOne
-	@JoinColumn(name="LANGUAGE_ID")
-	private Language language1;
+    public void setOriginalLanguageId(Long originalLanguageId) {
+        this.originalLanguageId = originalLanguageId;
+    }
 
-	//bi-directional many-to-one association to Language
-	@ManyToOne
-	@JoinColumn(name="ORIGINAL_LANGUAGE_ID")
-	private Language language2;
+    @Basic
+    @Column(name = "RENTAL_DURATION", nullable = false, precision = 0)
+    public long getRentalDuration() {
+        return rentalDuration;
+    }
 
-	//bi-directional many-to-one association to FilmActor
-	@OneToMany(mappedBy="film")
-	private List<FilmActor> filmActors;
+    public void setRentalDuration(long rentalDuration) {
+        this.rentalDuration = rentalDuration;
+    }
 
-	//bi-directional many-to-one association to FilmCategory
-	@OneToMany(mappedBy="film")
-	private List<FilmCategory> filmCategories;
+    @Basic
+    @Column(name = "RENTAL_RATE", nullable = false, precision = 2)
+    public long getRentalRate() {
+        return rentalRate;
+    }
 
-	//bi-directional many-to-one association to Inventory
-	@OneToMany(mappedBy="film")
-	private List<Inventory> inventories;
+    public void setRentalRate(long rentalRate) {
+        this.rentalRate = rentalRate;
+    }
 
-	public Film() {
-	}
+    @Basic
+    @Column(name = "LENGTH", nullable = true, precision = 0)
+    public Long getLength() {
+        return length;
+    }
 
-	public long getFilmId() {
-		return this.filmId;
-	}
+    public void setLength(Long length) {
+        this.length = length;
+    }
 
-	public void setFilmId(long filmId) {
-		this.filmId = filmId;
-	}
+    @Basic
+    @Column(name = "REPLACEMENT_COST", nullable = false, precision = 2)
+    public long getReplacementCost() {
+        return replacementCost;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public void setReplacementCost(long replacementCost) {
+        this.replacementCost = replacementCost;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @Basic
+    @Column(name = "RATING", nullable = true, length = 10)
+    public String getRating() {
+        return rating;
+    }
 
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
 
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+    @Basic
+    @Column(name = "SPECIAL_FEATURES", nullable = true, length = 100)
+    public String getSpecialFeatures() {
+        return specialFeatures;
+    }
 
-	public BigDecimal getLength() {
-		return this.length;
-	}
+    public void setSpecialFeatures(String specialFeatures) {
+        this.specialFeatures = specialFeatures;
+    }
 
-	public void setLength(BigDecimal length) {
-		this.length = length;
-	}
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = false)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public String getRating() {
-		return this.rating;
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public void setRating(String rating) {
-		this.rating = rating;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Film film = (Film) o;
+        return filmId == film.filmId &&
+                languageId == film.languageId &&
+                rentalDuration == film.rentalDuration &&
+                rentalRate == film.rentalRate &&
+                replacementCost == film.replacementCost &&
+                Objects.equals(title, film.title) &&
+                Objects.equals(description, film.description) &&
+                Objects.equals(releaseYear, film.releaseYear) &&
+                Objects.equals(originalLanguageId, film.originalLanguageId) &&
+                Objects.equals(length, film.length) &&
+                Objects.equals(rating, film.rating) &&
+                Objects.equals(specialFeatures, film.specialFeatures) &&
+                Objects.equals(lastUpdate, film.lastUpdate);
+    }
 
-	public String getReleaseYear() {
-		return this.releaseYear;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(filmId, title, description, releaseYear, languageId, originalLanguageId, rentalDuration, rentalRate, length, replacementCost, rating, specialFeatures, lastUpdate);
+    }
 
-	public void setReleaseYear(String releaseYear) {
-		this.releaseYear = releaseYear;
-	}
+    @ManyToOne
+    @JoinColumn(name = "LANGUAGE_ID", referencedColumnName = "LANGUAGE_ID", nullable = false)
+    public Language getLanguageByLanguageId() {
+        return languageByLanguageId;
+    }
 
-	public BigDecimal getRentalDuration() {
-		return this.rentalDuration;
-	}
+    public void setLanguageByLanguageId(Language languageByLanguageId) {
+        this.languageByLanguageId = languageByLanguageId;
+    }
 
-	public void setRentalDuration(BigDecimal rentalDuration) {
-		this.rentalDuration = rentalDuration;
-	}
+    @ManyToOne
+    @JoinColumn(name = "ORIGINAL_LANGUAGE_ID", referencedColumnName = "LANGUAGE_ID")
+    public Language getLanguageByOriginalLanguageId() {
+        return languageByOriginalLanguageId;
+    }
 
-	public BigDecimal getRentalRate() {
-		return this.rentalRate;
-	}
+    public void setLanguageByOriginalLanguageId(Language languageByOriginalLanguageId) {
+        this.languageByOriginalLanguageId = languageByOriginalLanguageId;
+    }
 
-	public void setRentalRate(BigDecimal rentalRate) {
-		this.rentalRate = rentalRate;
-	}
+    @OneToMany(mappedBy = "filmByFilmId")
+    public Collection<Inventory> getInventoriesByFilmId() {
+        return inventoriesByFilmId;
+    }
 
-	public BigDecimal getReplacementCost() {
-		return this.replacementCost;
-	}
+    public void setInventoriesByFilmId(Collection<Inventory> inventoriesByFilmId) {
+        this.inventoriesByFilmId = inventoriesByFilmId;
+    }
 
-	public void setReplacementCost(BigDecimal replacementCost) {
-		this.replacementCost = replacementCost;
-	}
+    @ManyToMany
+    @JoinTable(name = "FILM_ACTOR", catalog = "", schema = "SAKILA", joinColumns = @JoinColumn(name = "FILM_ID", referencedColumnName = "FILM_ID", nullable = false), inverseJoinColumns = @JoinColumn(name = "ACTOR_ID", referencedColumnName = "ACTOR_ID", nullable = false))
+    public Set<Actor> getActors() {
+        return Actors;
+    }
 
-	public String getSpecialFeatures() {
-		return this.specialFeatures;
-	}
+    public void setActors(Set<Actor> actors) {
+        Actors = actors;
+    }
 
-	public void setSpecialFeatures(String specialFeatures) {
-		this.specialFeatures = specialFeatures;
-	}
+    @ManyToMany
+    @JoinTable(name = "FILM_CATEGORY", catalog = "", schema = "SAKILA", joinColumns = @JoinColumn(name = "FILM_ID", referencedColumnName = "FILM_ID", nullable = false), inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "CATEGORY_ID", nullable = false))
+    public Set<Category> getCategories() {
+        return Categories;
+    }
 
-	public String getTitle() {
-		return this.title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public Language getLanguage1() {
-		return this.language1;
-	}
-
-	public void setLanguage1(Language language1) {
-		this.language1 = language1;
-	}
-
-	public Language getLanguage2() {
-		return this.language2;
-	}
-
-	public void setLanguage2(Language language2) {
-		this.language2 = language2;
-	}
-
-	public List<FilmActor> getFilmActors() {
-		return this.filmActors;
-	}
-
-	public void setFilmActors(List<FilmActor> filmActors) {
-		this.filmActors = filmActors;
-	}
-
-	public FilmActor addFilmActor(FilmActor filmActor) {
-		getFilmActors().add(filmActor);
-		filmActor.setFilm(this);
-
-		return filmActor;
-	}
-
-	public FilmActor removeFilmActor(FilmActor filmActor) {
-		getFilmActors().remove(filmActor);
-		filmActor.setFilm(null);
-
-		return filmActor;
-	}
-
-	public List<FilmCategory> getFilmCategories() {
-		return this.filmCategories;
-	}
-
-	public void setFilmCategories(List<FilmCategory> filmCategories) {
-		this.filmCategories = filmCategories;
-	}
-
-	public FilmCategory addFilmCategory(FilmCategory filmCategory) {
-		getFilmCategories().add(filmCategory);
-		filmCategory.setFilm(this);
-
-		return filmCategory;
-	}
-
-	public FilmCategory removeFilmCategory(FilmCategory filmCategory) {
-		getFilmCategories().remove(filmCategory);
-		filmCategory.setFilm(null);
-
-		return filmCategory;
-	}
-
-	public List<Inventory> getInventories() {
-		return this.inventories;
-	}
-
-	public void setInventories(List<Inventory> inventories) {
-		this.inventories = inventories;
-	}
-
-	public Inventory addInventory(Inventory inventory) {
-		getInventories().add(inventory);
-		inventory.setFilm(this);
-
-		return inventory;
-	}
-
-	public Inventory removeInventory(Inventory inventory) {
-		getInventories().remove(inventory);
-		inventory.setFilm(null);
-
-		return inventory;
-	}
-
+    public void setCategories(Set<Category> categories) {
+        Categories = categories;
+    }
 }

@@ -1,94 +1,79 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Objects;
 
-
-/**
- * The persistent class for the CITY database table.
- * 
- */
 @Entity
-@NamedQuery(name="City.findAll", query="SELECT c FROM City c")
-public class City implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class City {
+    private long cityId;
+    private String city;
+    private Timestamp lastUpdate;
+    private Collection<Address> addressesByCityId;
+    private Country countryByCountryId;
 
-	@Id
-	@Column(name="CITY_ID")
-	private long cityId;
+    @Id
+    @Column(name = "CITY_ID", nullable = false, precision = 0)
+    public long getCityId() {
+        return cityId;
+    }
 
-	private String city;
+    public void setCityId(long cityId) {
+        this.cityId = cityId;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    @Basic
+    @Column(name = "CITY", nullable = false, length = 50)
+    public String getCity() {
+        return city;
+    }
 
-	//bi-directional many-to-one association to Address
-	@OneToMany(mappedBy="city")
-	private List<Address> addresses;
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	//bi-directional many-to-one association to Country
-	@ManyToOne
-	@JoinColumn(name="COUNTRY_ID")
-	private Country country;
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = false)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public City() {
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public long getCityId() {
-		return this.cityId;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        City city1 = (City) o;
+        return cityId == city1.cityId &&
+                Objects.equals(city, city1.city) &&
+                Objects.equals(lastUpdate, city1.lastUpdate);
+    }
 
-	public void setCityId(long cityId) {
-		this.cityId = cityId;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(cityId, city, lastUpdate);
+    }
 
-	public String getCity() {
-		return this.city;
-	}
+    @OneToMany(mappedBy = "cityByCityId")
+    public Collection<Address> getAddressesByCityId() {
+        return addressesByCityId;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public void setAddressesByCityId(Collection<Address> addressesByCityId) {
+        this.addressesByCityId = addressesByCityId;
+    }
 
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
+    @ManyToOne
+    @JoinColumn(name = "COUNTRY_ID", referencedColumnName = "COUNTRY_ID", nullable = false)
+    public Country getCountryByCountryId() {
+        return countryByCountryId;
+    }
 
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-
-	public List<Address> getAddresses() {
-		return this.addresses;
-	}
-
-	public void setAddresses(List<Address> addresses) {
-		this.addresses = addresses;
-	}
-
-	public Address addAddress(Address address) {
-		getAddresses().add(address);
-		address.setCity(this);
-
-		return address;
-	}
-
-	public Address removeAddress(Address address) {
-		getAddresses().remove(address);
-		address.setCity(null);
-
-		return address;
-	}
-
-	public Country getCountry() {
-		return this.country;
-	}
-
-	public void setCountry(Country country) {
-		this.country = country;
-	}
-
+    public void setCountryByCountryId(Country countryByCountryId) {
+        this.countryByCountryId = countryByCountryId;
+    }
 }

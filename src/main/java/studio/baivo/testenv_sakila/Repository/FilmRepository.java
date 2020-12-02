@@ -3,7 +3,7 @@ package studio.baivo.testenv_sakila.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import studio.baivo.testenv_sakila.entitys.Film;
+
 import java.util.List;
 
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository

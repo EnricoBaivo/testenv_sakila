@@ -1,108 +1,78 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Objects;
 
-
-/**
- * The persistent class for the "LANGUAGE" database table.
- * 
- */
 @Entity
-@Table(name="\"LANGUAGE\"")
-@NamedQuery(name="Language.findAll", query="SELECT l FROM Language l")
-public class Language implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Language {
+    private long languageId;
+    private String name;
+    private Timestamp lastUpdate;
+    private Collection<Film> filmsByLanguageId;
+    private Collection<Film> filmsByLanguageId_0;
 
-	@Id
-	@Column(name="LANGUAGE_ID")
-	private long languageId;
+    @Id
+    @Column(name = "LANGUAGE_ID", nullable = false, precision = 0)
+    public long getLanguageId() {
+        return languageId;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    public void setLanguageId(long languageId) {
+        this.languageId = languageId;
+    }
 
-	private String name;
+    @Basic
+    @Column(name = "NAME", nullable = false, length = 20)
+    public String getName() {
+        return name;
+    }
 
-	//bi-directional many-to-one association to Film
-	@OneToMany(mappedBy="language1")
-	private List<Film> films1;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	//bi-directional many-to-one association to Film
-	@OneToMany(mappedBy="language2")
-	private List<Film> films2;
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = false)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public Language() {
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public long getLanguageId() {
-		return this.languageId;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Language language = (Language) o;
+        return languageId == language.languageId &&
+                Objects.equals(name, language.name) &&
+                Objects.equals(lastUpdate, language.lastUpdate);
+    }
 
-	public void setLanguageId(long languageId) {
-		this.languageId = languageId;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(languageId, name, lastUpdate);
+    }
 
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
+    @OneToMany(mappedBy = "languageByLanguageId")
+    public Collection<Film> getFilmsByLanguageId() {
+        return filmsByLanguageId;
+    }
 
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+    public void setFilmsByLanguageId(Collection<Film> filmsByLanguageId) {
+        this.filmsByLanguageId = filmsByLanguageId;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    @OneToMany(mappedBy = "languageByOriginalLanguageId")
+    public Collection<Film> getFilmsByLanguageId_0() {
+        return filmsByLanguageId_0;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<Film> getFilms1() {
-		return this.films1;
-	}
-
-	public void setFilms1(List<Film> films1) {
-		this.films1 = films1;
-	}
-
-	public Film addFilms1(Film films1) {
-		getFilms1().add(films1);
-		films1.setLanguage1(this);
-
-		return films1;
-	}
-
-	public Film removeFilms1(Film films1) {
-		getFilms1().remove(films1);
-		films1.setLanguage1(null);
-
-		return films1;
-	}
-
-	public List<Film> getFilms2() {
-		return this.films2;
-	}
-
-	public void setFilms2(List<Film> films2) {
-		this.films2 = films2;
-	}
-
-	public Film addFilms2(Film films2) {
-		getFilms2().add(films2);
-		films2.setLanguage2(this);
-
-		return films2;
-	}
-
-	public Film removeFilms2(Film films2) {
-		getFilms2().remove(films2);
-		films2.setLanguage2(null);
-
-		return films2;
-	}
-
+    public void setFilmsByLanguageId_0(Collection<Film> filmsByLanguageId_0) {
+        this.filmsByLanguageId_0 = filmsByLanguageId_0;
+    }
 }

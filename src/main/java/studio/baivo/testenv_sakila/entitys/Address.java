@@ -1,187 +1,147 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Objects;
 
-
-/**
- * The persistent class for the ADDRESS database table.
- * 
- */
 @Entity
-@NamedQuery(name="Address.findAll", query="SELECT a FROM Address a")
-public class Address implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Address {
+    private long addressId;
+    private String address;
+    private String address2;
+    private String district;
+    private String postalCode;
+    private String phone;
+    private Timestamp lastUpdate;
+    private City cityByCityId;
+    private Collection<Customer> customersByAddressId;
+    private Collection<Staff> staffByAddressId;
+    private Collection<Store> storesByAddressId;
 
-	@Id
-	@Column(name="ADDRESS_ID")
-	private long addressId;
+    @Id
+    @Column(name = "ADDRESS_ID", nullable = false, precision = 0)
+    public long getAddressId() {
+        return addressId;
+    }
 
-	private String address;
+    public void setAddressId(long addressId) {
+        this.addressId = addressId;
+    }
 
-	private String address2;
+    @Basic
+    @Column(name = "ADDRESS", nullable = false, length = 50)
+    public String getAddress() {
+        return address;
+    }
 
-	private String district;
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    @Basic
+    @Column(name = "ADDRESS2", nullable = true, length = 50)
+    public String getAddress2() {
+        return address2;
+    }
 
-	private String phone;
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
 
-	@Column(name="POSTAL_CODE")
-	private String postalCode;
+    @Basic
+    @Column(name = "DISTRICT", nullable = false, length = 20)
+    public String getDistrict() {
+        return district;
+    }
 
-	//bi-directional many-to-one association to City
-	@ManyToOne
-	@JoinColumn(name="CITY_ID")
-	private City city;
+    public void setDistrict(String district) {
+        this.district = district;
+    }
 
-	//bi-directional many-to-one association to Customer
-	@OneToMany(mappedBy="address")
-	private List<Customer> customers;
+    @Basic
+    @Column(name = "POSTAL_CODE", nullable = true, length = 10)
+    public String getPostalCode() {
+        return postalCode;
+    }
 
-	//bi-directional many-to-one association to Staff
-	@OneToMany(mappedBy="address")
-	private List<Staff> staffs;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
 
-	//bi-directional many-to-one association to Store
-	@OneToMany(mappedBy="address")
-	private List<Store> stores;
+    @Basic
+    @Column(name = "PHONE", nullable = false, length = 20)
+    public String getPhone() {
+        return phone;
+    }
 
-	public Address() {
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public long getAddressId() {
-		return this.addressId;
-	}
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = false)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public void setAddressId(long addressId) {
-		this.addressId = addressId;
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public String getAddress() {
-		return this.address;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address1 = (Address) o;
+        return addressId == address1.addressId &&
+                Objects.equals(address, address1.address) &&
+                Objects.equals(address2, address1.address2) &&
+                Objects.equals(district, address1.district) &&
+                Objects.equals(postalCode, address1.postalCode) &&
+                Objects.equals(phone, address1.phone) &&
+                Objects.equals(lastUpdate, address1.lastUpdate);
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(addressId, address, address2, district, postalCode, phone, lastUpdate);
+    }
 
-	public String getAddress2() {
-		return this.address2;
-	}
+    @ManyToOne
+    @JoinColumn(name = "CITY_ID", referencedColumnName = "CITY_ID", nullable = false)
+    public City getCityByCityId() {
+        return cityByCityId;
+    }
 
-	public void setAddress2(String address2) {
-		this.address2 = address2;
-	}
+    public void setCityByCityId(City cityByCityId) {
+        this.cityByCityId = cityByCityId;
+    }
 
-	public String getDistrict() {
-		return this.district;
-	}
+    @OneToMany(mappedBy = "addressByAddressId")
+    public Collection<Customer> getCustomersByAddressId() {
+        return customersByAddressId;
+    }
 
-	public void setDistrict(String district) {
-		this.district = district;
-	}
+    public void setCustomersByAddressId(Collection<Customer> customersByAddressId) {
+        this.customersByAddressId = customersByAddressId;
+    }
 
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
+    @OneToMany(mappedBy = "addressByAddressId")
+    public Collection<Staff> getStaffByAddressId() {
+        return staffByAddressId;
+    }
 
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+    public void setStaffByAddressId(Collection<Staff> staffByAddressId) {
+        this.staffByAddressId = staffByAddressId;
+    }
 
-	public String getPhone() {
-		return this.phone;
-	}
+    @OneToMany(mappedBy = "addressByAddressId")
+    public Collection<Store> getStoresByAddressId() {
+        return storesByAddressId;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getPostalCode() {
-		return this.postalCode;
-	}
-
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
-
-	public City getCity() {
-		return this.city;
-	}
-
-	public void setCity(City city) {
-		this.city = city;
-	}
-
-	public List<Customer> getCustomers() {
-		return this.customers;
-	}
-
-	public void setCustomers(List<Customer> customers) {
-		this.customers = customers;
-	}
-
-	public Customer addCustomer(Customer customer) {
-		getCustomers().add(customer);
-		customer.setAddress(this);
-
-		return customer;
-	}
-
-	public Customer removeCustomer(Customer customer) {
-		getCustomers().remove(customer);
-		customer.setAddress(null);
-
-		return customer;
-	}
-
-	public List<Staff> getStaffs() {
-		return this.staffs;
-	}
-
-	public void setStaffs(List<Staff> staffs) {
-		this.staffs = staffs;
-	}
-
-	public Staff addStaff(Staff staff) {
-		getStaffs().add(staff);
-		staff.setAddress(this);
-
-		return staff;
-	}
-
-	public Staff removeStaff(Staff staff) {
-		getStaffs().remove(staff);
-		staff.setAddress(null);
-
-		return staff;
-	}
-
-	public List<Store> getStores() {
-		return this.stores;
-	}
-
-	public void setStores(List<Store> stores) {
-		this.stores = stores;
-	}
-
-	public Store addStore(Store store) {
-		getStores().add(store);
-		store.setAddress(this);
-
-		return store;
-	}
-
-	public Store removeStore(Store store) {
-		getStores().remove(store);
-		store.setAddress(null);
-
-		return store;
-	}
-
+    public void setStoresByAddressId(Collection<Store> storesByAddressId) {
+        this.storesByAddressId = storesByAddressId;
+    }
 }

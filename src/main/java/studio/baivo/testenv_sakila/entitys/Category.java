@@ -1,81 +1,68 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Objects;
+import java.util.Set;
 
-
-/**
- * The persistent class for the CATEGORY database table.
- * 
- */
 @Entity
-@NamedQuery(name="Category.findAll", query="SELECT c FROM Category c")
-public class Category implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Category {
+    private long categoryId;
+    private String name;
+    private Timestamp lastUpdate;
+    private Set<Film> Films;
 
-	@Id
-	@Column(name="CATEGORY_ID")
-	private long categoryId;
+    @Id
+    @Column(name = "CATEGORY_ID", nullable = false, precision = 0)
+    public long getCategoryId() {
+        return categoryId;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
+    }
 
-	private String name;
+    @Basic
+    @Column(name = "NAME", nullable = false, length = 25)
+    public String getName() {
+        return name;
+    }
 
-	//bi-directional many-to-one association to FilmCategory
-	@OneToMany(mappedBy="category")
-	private List<FilmCategory> filmCategories;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Category() {
-	}
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = false)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public long getCategoryId() {
-		return this.categoryId;
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public void setCategoryId(long categoryId) {
-		this.categoryId = categoryId;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return categoryId == category.categoryId &&
+                Objects.equals(name, category.name) &&
+                Objects.equals(lastUpdate, category.lastUpdate);
+    }
 
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(categoryId, name, lastUpdate);
+    }
 
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+    @ManyToMany(mappedBy = "Categories")
+    public Set<Film> getFilms() {
+        return Films;
+    }
 
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<FilmCategory> getFilmCategories() {
-		return this.filmCategories;
-	}
-
-	public void setFilmCategories(List<FilmCategory> filmCategories) {
-		this.filmCategories = filmCategories;
-	}
-
-	public FilmCategory addFilmCategory(FilmCategory filmCategory) {
-		getFilmCategories().add(filmCategory);
-		filmCategory.setCategory(this);
-
-		return filmCategory;
-	}
-
-	public FilmCategory removeFilmCategory(FilmCategory filmCategory) {
-		getFilmCategories().remove(filmCategory);
-		filmCategory.setCategory(null);
-
-		return filmCategory;
-	}
-
+    public void setFilms(Set<Film> films) {
+        Films = films;
+    }
 }

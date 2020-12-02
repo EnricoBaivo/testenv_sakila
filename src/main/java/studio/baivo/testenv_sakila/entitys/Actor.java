@@ -1,93 +1,80 @@
 package studio.baivo.testenv_sakila.entitys;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Objects;
+import java.util.Set;
 
-
-/**
- * The persistent class for the ACTOR database table.
- * 
- */
 @Entity
-@NamedQuery(name="Actor.findAll", query="SELECT a FROM Actor a")
-public class Actor implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Actor {
+    private long actorId;
+    private String firstName;
+    private String lastName;
+    private Timestamp lastUpdate;
+    private Set<Film> Films;
 
-	@Id
-	@Column(name="ACTOR_ID")
-	private long actorId;
+    @Id
+    @Column(name = "ACTOR_ID", nullable = false, precision = 0)
+    public long getActorId() {
+        return actorId;
+    }
 
-	@Column(name="FIRST_NAME")
-	private String firstName;
+    public void setActorId(long actorId) {
+        this.actorId = actorId;
+    }
 
-	@Column(name="LAST_NAME")
-	private String lastName;
+    @Basic
+    @Column(name = "FIRST_NAME", nullable = false, length = 45)
+    public String getFirstName() {
+        return firstName;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="LAST_UPDATE")
-	private Date lastUpdate;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	//bi-directional many-to-one association to FilmActor
-	@OneToMany(mappedBy="actor")
-	private List<FilmActor> filmActors;
+    @Basic
+    @Column(name = "LAST_NAME", nullable = false, length = 45)
+    public String getLastName() {
+        return lastName;
+    }
 
-	public Actor() {
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public long getActorId() {
-		return this.actorId;
-	}
+    @Basic
+    @Column(name = "LAST_UPDATE", nullable = false)
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
 
-	public void setActorId(long actorId) {
-		this.actorId = actorId;
-	}
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
-	public String getFirstName() {
-		return this.firstName;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Actor actor = (Actor) o;
+        return actorId == actor.actorId &&
+                Objects.equals(firstName, actor.firstName) &&
+                Objects.equals(lastName, actor.lastName) &&
+                Objects.equals(lastUpdate, actor.lastUpdate);
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(actorId, firstName, lastName, lastUpdate);
+    }
 
-	public String getLastName() {
-		return this.lastName;
-	}
+    @ManyToMany(mappedBy = "Actors")
+    public Set<Film> getFilms() {
+        return Films;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public Date getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-
-	public List<FilmActor> getFilmActors() {
-		return this.filmActors;
-	}
-
-	public void setFilmActors(List<FilmActor> filmActors) {
-		this.filmActors = filmActors;
-	}
-
-	public FilmActor addFilmActor(FilmActor filmActor) {
-		getFilmActors().add(filmActor);
-		filmActor.setActor(this);
-
-		return filmActor;
-	}
-
-	public FilmActor removeFilmActor(FilmActor filmActor) {
-		getFilmActors().remove(filmActor);
-		filmActor.setActor(null);
-
-		return filmActor;
-	}
-
+    public void setFilms(Set<Film> films) {
+        Films = films;
+    }
 }
