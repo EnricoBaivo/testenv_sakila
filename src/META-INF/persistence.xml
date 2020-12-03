@@ -2,23 +2,10 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
     <persistence-unit name="persistenceUnit">
-        <class>studio.baivo.testenv_sakila.entitys.Actor</class>
-        <class>studio.baivo.testenv_sakila.entitys.Address</class>
-        <class>studio.baivo.testenv_sakila.entitys.Category</class>
-        <class>studio.baivo.testenv_sakila.entitys.City</class>
-        <class>studio.baivo.testenv_sakila.entitys.Country</class>
-        <class>studio.baivo.testenv_sakila.entitys.Customer</class>
-        <class>studio.baivo.testenv_sakila.entitys.Film</class>
-        <class>studio.baivo.testenv_sakila.entitys.Inventory</class>
-        <class>studio.baivo.testenv_sakila.entitys.Language</class>
-        <class>studio.baivo.testenv_sakila.entitys.Payment</class>
-        <class>studio.baivo.testenv_sakila.entitys.Rental</class>
-        <class>studio.baivo.testenv_sakila.entitys.Staff</class>
-        <class>studio.baivo.testenv_sakila.entitys.Store</class>
         <properties>
 <!--            <property name="hibernate.connection.url" value="jdbc:oracle:thin:@localhost:1521:hsrm"/>-->
 <!--            <property name="hibernate.connection.driver_class" value="oracle.jdbc.OracleDriver"/>-->
-            <property name="hibernate.connection.url" value="jdbc:postgresql:thin:@localhost:1521:hsrm"/>
+            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/hsrm"/>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
         </properties>
 
