@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import studio.baivo.testenv_sakila.Repository.FilmRepository;
+import studio.baivo.testenv_sakila.model.Film;
+
 
 //https://www.youtube.com/watch?v=ijnIgreiNHU&list=PLs5n5nYB22fIVO1nSiNoUTHIbQujdHYuC&index=1
 @Controller // This means that this class is a Controller
@@ -33,19 +35,19 @@ public class MainRestController {
         return filmRepository.findAll();
     }
 
-//    @GetMapping(path="/start/find/{filmTitle}")
-//    public @ResponseBody Iterable<Film> findFilmTitle(@PathVariable String filmTitle) {
-//        // This returns a JSON or XML with the users
-//        // Select * from film
-//        return filmRepository.getFilmsByTitle(filmTitle);
-//    }
+    @GetMapping(path="/start/find/{filmTitle}")
+    public @ResponseBody Iterable<Film> findFilmTitle(@PathVariable String filmTitle) {
+        // This returns a JSON or XML with the users
+        // Select * from film
+        return filmRepository.getFilmsByTitle(filmTitle);
+    }
 
-//    @GetMapping(path="/start/find/like/{filmTitle}")
-//    public @ResponseBody Iterable<Film> findFilmTitleLike(@PathVariable String filmTitle) {
-//        // This returns a JSON or XML with the users
-//        // Select * from film
-//        return filmRepository.hahaha(filmTitle);
-//    }
+    @GetMapping(path="/start/find/like/{filmTitle}")
+    public @ResponseBody Iterable<Film> findFilmTitleLike(@PathVariable String filmTitle) {
+        // This returns a JSON or XML with the users
+        // Select * from film
+        return filmRepository.hahaha(filmTitle);
+    }
 
     @GetMapping(path="/start")
 //    https://www.youtube.com/watch?v=UIetMLyDVjQ

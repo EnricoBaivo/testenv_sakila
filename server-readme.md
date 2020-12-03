@@ -1,11 +1,11 @@
-
-
+<code>xzcat container name | docker load</code>
 Startet den Dockercontainer mit der Datenbank sakilia 
 old
 docker run -p 5432:5432 syntegris/sakila-postgresql:12.4
 new
+<code>
 docker run -p
-5432:5432 syntegris/sakila-postgresql:12.5
+5432:5432 syntegris/sakila-postgresql:12.5</code>
 
 
 Port auf 5432
