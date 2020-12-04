@@ -2,6 +2,19 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
     <persistence-unit name="persistenceUnit">
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Actor</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Address</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Category</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.City</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Country</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Customer</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Film</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Inventory</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Language</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Payment</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Rental</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Staff</class>
+        <class>de.hsrm.wp.springboot.testenv_sakila.model.Store</class>
         <properties>
 <!--            <property name="hibernate.connection.url" value="jdbc:oracle:thin:@localhost:1521:hsrm"/>-->
 <!--            <property name="hibernate.connection.driver_class" value="oracle.jdbc.OracleDriver"/>-->

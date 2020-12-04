@@ -8,12 +8,11 @@
         <version>2.4.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>studio.baivo</groupId>
-    <artifactId>testenv_sakila</artifactId>
+    <groupId>de.hsrm.wp</groupId>
+    <artifactId>springboot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>testenv_sakila</name>
+    <name>Testapplication</name>
     <description>Umgebung um Liebe zumachen</description>
-
     <properties>
         <java.version>11</java.version>
     </properties>
