@@ -66,7 +66,6 @@ public class Staff {
     }
 
     @Basic
-    @Lob
     @Column(name = "PICTURE")
     public byte[] getPicture() {
         return picture;

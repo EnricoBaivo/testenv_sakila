@@ -1,6 +1,7 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -10,7 +11,7 @@ public class Payment {
     private long customerId;
     private long staffId;
     private Long rentalId;
-    private long amount;
+    private BigDecimal amount;
     private Timestamp paymentDate;
     private Timestamp lastUpdate;
     private Customer customerByCustomerId;
@@ -58,12 +59,12 @@ public class Payment {
     }
 
     @Basic
-    @Column(name = "AMOUNT")
-    public long getAmount() {
+    @Column(name = "AMOUNT",precision = 5, scale = 2)
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

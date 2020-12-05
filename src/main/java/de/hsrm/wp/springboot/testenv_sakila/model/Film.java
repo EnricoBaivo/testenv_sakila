@@ -1,6 +1,7 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Objects;
@@ -11,13 +12,13 @@ public class Film {
     private long filmId;
     private String title;
     private String description;
-    private Long releaseYear;
+    private Integer releaseYear;
     private long languageId;
     private Long originalLanguageId;
     private long rentalDuration;
-    private long rentalRate;
+    private BigDecimal rentalRate;
     private Long length;
-    private long replacementCost;
+    private BigDecimal replacementCost;
     private String rating;
     private String specialFeatures;
     private Timestamp lastUpdate;
@@ -60,11 +61,11 @@ public class Film {
 
     @Basic
     @Column(name = "RELEASE_YEAR")
-    public Long getReleaseYear() {
+    public Integer getReleaseYear() {
         return releaseYear;
     }
 
-    public void setReleaseYear(Long releaseYear) {
+    public void setReleaseYear(Integer releaseYear) {
         this.releaseYear = releaseYear;
     }
 
@@ -99,12 +100,12 @@ public class Film {
     }
 
     @Basic
-    @Column(name = "RENTAL_RATE")
-    public long getRentalRate() {
+    @Column(name = "RENTAL_RATE", precision = 4, scale = 2)
+    public BigDecimal getRentalRate() {
         return rentalRate;
     }
 
-    public void setRentalRate(long rentalRate) {
+    public void setRentalRate(BigDecimal rentalRate) {
         this.rentalRate = rentalRate;
     }
 
@@ -119,12 +120,12 @@ public class Film {
     }
 
     @Basic
-    @Column(name = "REPLACEMENT_COST")
-    public long getReplacementCost() {
+    @Column(name = "REPLACEMENT_COST", precision = 5, scale = 2)
+    public BigDecimal getReplacementCost() {
         return replacementCost;
     }
 
-    public void setReplacementCost(long replacementCost) {
+    public void setReplacementCost(BigDecimal replacementCost) {
         this.replacementCost = replacementCost;
     }
 
