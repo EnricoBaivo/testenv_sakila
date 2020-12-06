@@ -10,6 +10,27 @@
 2. Ein neues Genre (Name? ;-) ) wird eingeführt, worunter alle Filme aus den Bereichen Horror, Thriller und Komödien fallen. Das neue Genre wird zusätzlich zu den bestehenden hinzugefügt (alle Filme behalten die bisherigen Genres und ein neues kommt potentiell hinzu).
 ### SQL
 
+> <code>Select
+> 
+> film.film_id,
+> film.title,
+> film_category.film_id,
+> film_category.category_id,
+> category.category_id,
+> category.name
+> 
+> FROM Film
+> INNER JOIN
+> Film_category
+> ON Film.film_id = Film_category.film_id
+> 
+> INNER Join Category
+> ON film_category.category_id = category.category_id
+> 
+> Where
+>    Category.name = 'Horror'
+> OR Category.name = 'Sci-Fi'
+> OR Category.name = 'Action '</code>
 ### Relationale Algebra
 
 
