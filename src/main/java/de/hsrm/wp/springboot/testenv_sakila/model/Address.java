@@ -1,159 +1,199 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
 
-import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+
+
+/**
+ * The persistent class for the address database table.
+ * 
+ */
 @Entity
-public class Address {
-    private long addressId;
-    private String address;
-    private String address2;
-    private String district;
-    private long cityId;
-    private String postalCode;
-    private String phone;
-    private Timestamp lastUpdate;
-    private City cityByCityId;
-    private Collection<Customer> customersByAddressId;
-    private Collection<Staff> staffByAddressId;
-    private Collection<Store> storesByAddressId;
+@NamedQuery(name="Address.findAll", query="SELECT a FROM Address a")
+public class Address implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ADDRESS_ID")
-    public long getAddressId() {
-        return addressId;
-    }
+	@Id
+	@SequenceGenerator(name="ADDRESS_ADDRESSID_GENERATOR", sequenceName="ADDRESS_ADDRESS_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ADDRESS_ADDRESSID_GENERATOR")
+	@Column(name="address_id")
+	private Long addressId;
 
-    public void setAddressId(long addressId) {
-        this.addressId = addressId;
-    }
+	private String address;
 
-    @Basic
-    @Column(name = "ADDRESS")
-    public String getAddress() {
-        return address;
-    }
+	private String address2;
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	private String district;
 
-    @Basic
-    @Column(name = "ADDRESS2")
-    public String getAddress2() {
-        return address2;
-    }
+	@Column(name="last_update")
+	private Timestamp lastUpdate;
 
-    public void setAddress2(String address2) {
-        this.address2 = address2;
-    }
+	private String phone;
 
-    @Basic
-    @Column(name = "DISTRICT")
-    public String getDistrict() {
-        return district;
-    }
+	@Column(name="postal_code")
+	private String postalCode;
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
+	//bi-directional many-to-one association to City
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="city_id")
+	private City city;
 
-    @Basic
-    @Column(name = "CITY_ID", insertable=false, updatable=false)
-    public long getCityId() {
-        return cityId;
-    }
+	//bi-directional many-to-one association to Customer
+	@OneToMany(mappedBy="address")
+	private Set<Customer> customers;
 
-    public void setCityId(long cityId) {
-        this.cityId = cityId;
-    }
+	//bi-directional many-to-one association to Staff
+	@OneToMany(mappedBy="address")
+	private Set<Staff> staffs;
 
-    @Basic
-    @Column(name = "POSTAL_CODE")
-    public String getPostalCode() {
-        return postalCode;
-    }
+	//bi-directional many-to-one association to Store
+	@OneToMany(mappedBy="address")
+	private Set<Store> stores;
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
+	public Address() {
+	}
 
-    @Basic
-    @Column(name = "PHONE")
-    public String getPhone() {
-        return phone;
-    }
+	public Long getAddressId() {
+		return this.addressId;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
 
-    @Basic
-    @Column(name = "LAST_UPDATE")
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
+	public String getAddress() {
+		return this.address;
+	}
 
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Address address1 = (Address) o;
-        return addressId == address1.addressId &&
-                cityId == address1.cityId &&
-                Objects.equals(address, address1.address) &&
-                Objects.equals(address2, address1.address2) &&
-                Objects.equals(district, address1.district) &&
-                Objects.equals(postalCode, address1.postalCode) &&
-                Objects.equals(phone, address1.phone) &&
-                Objects.equals(lastUpdate, address1.lastUpdate);
-    }
+	public String getAddress2() {
+		return this.address2;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(addressId, address, address2, district, cityId, postalCode, phone, lastUpdate);
-    }
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "CITY_ID", referencedColumnName = "CITY_ID", nullable = false)
-    public City getCityByCityId() {
-        return cityByCityId;
-    }
+	public String getDistrict() {
+		return this.district;
+	}
 
-    public void setCityByCityId(City cityByCityId) {
-        this.cityByCityId = cityByCityId;
-    }
+	public void setDistrict(String district) {
+		this.district = district;
+	}
 
-    @OneToMany(mappedBy = "addressByAddressId")
-    public Collection<Customer> getCustomersByAddressId() {
-        return customersByAddressId;
-    }
+	public Timestamp getLastUpdate() {
+		return this.lastUpdate;
+	}
 
-    public void setCustomersByAddressId(Collection<Customer> customersByAddressId) {
-        this.customersByAddressId = customersByAddressId;
-    }
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
-    @OneToMany(mappedBy = "addressByAddressId")
-    public Collection<Staff> getStaffByAddressId() {
-        return staffByAddressId;
-    }
+	public String getPhone() {
+		return this.phone;
+	}
 
-    public void setStaffByAddressId(Collection<Staff> staffByAddressId) {
-        this.staffByAddressId = staffByAddressId;
-    }
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
-    @OneToMany(mappedBy = "addressByAddressId")
-    public Collection<Store> getStoresByAddressId() {
-        return storesByAddressId;
-    }
+	public String getPostalCode() {
+		return this.postalCode;
+	}
 
-    public void setStoresByAddressId(Collection<Store> storesByAddressId) {
-        this.storesByAddressId = storesByAddressId;
-    }
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+
+	public City getCity() {
+		return this.city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
+	}
+
+	public Set<Customer> getCustomers() {
+		return this.customers;
+	}
+
+	public void setCustomers(Set<Customer> customers) {
+		this.customers = customers;
+	}
+
+	public Customer addCustomer(Customer customer) {
+		getCustomers().add(customer);
+		customer.setAddress(this);
+
+		return customer;
+	}
+
+	public Customer removeCustomer(Customer customer) {
+		getCustomers().remove(customer);
+		customer.setAddress(null);
+
+		return customer;
+	}
+
+	public Set<Staff> getStaffs() {
+		return this.staffs;
+	}
+
+	public void setStaffs(Set<Staff> staffs) {
+		this.staffs = staffs;
+	}
+
+	public Staff addStaff(Staff staff) {
+		getStaffs().add(staff);
+		staff.setAddress(this);
+
+		return staff;
+	}
+
+	public Staff removeStaff(Staff staff) {
+		getStaffs().remove(staff);
+		staff.setAddress(null);
+
+		return staff;
+	}
+
+	public Set<Store> getStores() {
+		return this.stores;
+	}
+
+	public void setStores(Set<Store> stores) {
+		this.stores = stores;
+	}
+
+	public Store addStore(Store store) {
+		getStores().add(store);
+		store.setAddress(this);
+
+		return store;
+	}
+
+	public Store removeStore(Store store) {
+		getStores().remove(store);
+		store.setAddress(null);
+
+		return store;
+	}
+
 }

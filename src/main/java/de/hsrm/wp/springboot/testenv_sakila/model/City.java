@@ -1,91 +1,105 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
-
-import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+
+
+/**
+ * The persistent class for the city database table.
+ * 
+ */
 @Entity
-public class City {
-    private long cityId;
-    private String city;
-    private long countryId;
-    private Timestamp lastUpdate;
-    private Collection<Address> addressesByCityId;
-    private Country countryByCountryId;
+@NamedQuery(name="City.findAll", query="SELECT c FROM City c")
+public class City implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "CITY_ID" , insertable=false, updatable=false)
-    public long getCityId() {
-        return cityId;
-    }
+	@Id
+	@SequenceGenerator(name="CITY_CITYID_GENERATOR", sequenceName="CITY_CITY_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CITY_CITYID_GENERATOR")
+	@Column(name="city_id")
+	private Long cityId;
 
-    public void setCityId(long cityId) {
-        this.cityId = cityId;
-    }
+	private String city;
 
-    @Basic
-    @Column(name = "CITY")
-    public String getCity() {
-        return city;
-    }
+	@Column(name="last_update")
+	private Timestamp lastUpdate;
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+	//bi-directional many-to-one association to Address
+	@OneToMany(mappedBy="city")
+	private Set<Address> addresses;
 
-    @Basic
-    @Column(name = "COUNTRY_ID", insertable=false, updatable=false)
-    public long getCountryId() {
-        return countryId;
-    }
+	//bi-directional many-to-one association to Country
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="country_id")
+	private Country country;
 
-    public void setCountryId(long countryId) {
-        this.countryId = countryId;
-    }
+	public City() {
+	}
 
-    @Basic
-    @Column(name = "LAST_UPDATE")
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
+	public Long getCityId() {
+		return this.cityId;
+	}
 
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+	public void setCityId(Long cityId) {
+		this.cityId = cityId;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        City city1 = (City) o;
-        return cityId == city1.cityId &&
-                countryId == city1.countryId &&
-                Objects.equals(city, city1.city) &&
-                Objects.equals(lastUpdate, city1.lastUpdate);
-    }
+	public String getCity() {
+		return this.city;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(cityId, city, countryId, lastUpdate);
-    }
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-    @OneToMany(mappedBy = "cityByCityId")
-    public Collection<Address> getAddressesByCityId() {
-        return addressesByCityId;
-    }
+	public Timestamp getLastUpdate() {
+		return this.lastUpdate;
+	}
 
-    public void setAddressesByCityId(Collection<Address> addressesByCityId) {
-        this.addressesByCityId = addressesByCityId;
-    }
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "COUNTRY_ID", referencedColumnName = "COUNTRY_ID", nullable = false)
-    public Country getCountryByCountryId() {
-        return countryByCountryId;
-    }
+	public Set<Address> getAddresses() {
+		return this.addresses;
+	}
 
-    public void setCountryByCountryId(Country countryByCountryId) {
-        this.countryByCountryId = countryByCountryId;
-    }
+	public void setAddresses(Set<Address> addresses) {
+		this.addresses = addresses;
+	}
+
+	public Address addAddress(Address address) {
+		getAddresses().add(address);
+		address.setCity(this);
+
+		return address;
+	}
+
+	public Address removeAddress(Address address) {
+		getAddresses().remove(address);
+		address.setCity(null);
+
+		return address;
+	}
+
+	public Country getCountry() {
+		return this.country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
 }

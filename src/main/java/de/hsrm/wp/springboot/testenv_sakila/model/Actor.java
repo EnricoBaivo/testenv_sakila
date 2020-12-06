@@ -1,80 +1,88 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
 
-import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+
+
+/**
+ * The persistent class for the actor database table.
+ * 
+ */
 @Entity
-public class Actor {
-    private long actorId;
-    private String firstName;
-    private String lastName;
-    private Timestamp lastUpdate;
-    private Set<Film> films;
+@NamedQuery(name="Actor.findAll", query="SELECT a FROM Actor a")
+public class Actor implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ACTOR_ID")
-    public long getActorId() {
-        return actorId;
-    }
+	@Id
+	@SequenceGenerator(name="ACTOR_ACTORID_GENERATOR", sequenceName="ACTOR_ACTOR_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ACTOR_ACTORID_GENERATOR")
+	@Column(name="actor_id")
+	private Long actorId;
 
-    public void setActorId(long actorId) {
-        this.actorId = actorId;
-    }
+	@Column(name="first_name")
+	private String firstName;
 
-    @Basic
-    @Column(name = "FIRST_NAME")
-    public String getFirstName() {
-        return firstName;
-    }
+	@Column(name="last_name")
+	private String lastName;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	@Column(name="last_update")
+	private Timestamp lastUpdate;
 
-    @Basic
-    @Column(name = "LAST_NAME")
-    public String getLastName() {
-        return lastName;
-    }
+	//bi-directional many-to-many association to Film
+	@ManyToMany(mappedBy="actors")
+	private Set<Film> films;
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public Actor() {
+	}
 
-    @Basic
-    @Column(name = "LAST_UPDATE")
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
+	public Long getActorId() {
+		return this.actorId;
+	}
 
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+	public void setActorId(Long actorId) {
+		this.actorId = actorId;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Actor actor = (Actor) o;
-        return actorId == actor.actorId &&
-                Objects.equals(firstName, actor.firstName) &&
-                Objects.equals(lastName, actor.lastName) &&
-                Objects.equals(lastUpdate, actor.lastUpdate);
-    }
+	public String getFirstName() {
+		return this.firstName;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(actorId, firstName, lastName, lastUpdate);
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    @ManyToMany(mappedBy = "actors")
-    public Set<Film> getFilms() {
-        return films;
-    }
+	public String getLastName() {
+		return this.lastName;
+	}
 
-    public void setFilms(Set<Film> films) {
-        this.films = films;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public Timestamp getLastUpdate() {
+		return this.lastUpdate;
+	}
+
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+
+	public Set<Film> getFilms() {
+		return this.films;
+	}
+
+	public void setFilms(Set<Film> films) {
+		this.films = films;
+	}
+
 }

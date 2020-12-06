@@ -1,114 +1,118 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
-
-import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+
+
+/**
+ * The persistent class for the inventory database table.
+ * 
+ */
 @Entity
-public class Inventory {
-    private long inventoryId;
-    private long filmId;
-    private long storeId;
-    private boolean active;
-    private Timestamp lastUpdate;
-    private Film filmByFilmId;
-    private Store storeByStoreId;
-    private Collection<Rental> rentalsByInventoryId;
+@NamedQuery(name="Inventory.findAll", query="SELECT i FROM Inventory i")
+public class Inventory implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "INVENTORY_ID")
-    public long getInventoryId() {
-        return inventoryId;
-    }
+	@Id
+	@SequenceGenerator(name="INVENTORY_INVENTORYID_GENERATOR", sequenceName="INVENTORY_INVENTORY_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="INVENTORY_INVENTORYID_GENERATOR")
+	@Column(name="inventory_id")
+	private Long inventoryId;
 
-    public void setInventoryId(long inventoryId) {
-        this.inventoryId = inventoryId;
-    }
+	private Boolean active;
 
-    @Basic
-    @Column(name = "FILM_ID" , insertable=false, updatable=false)
-    public long getFilmId() {
-        return filmId;
-    }
+	@Column(name="last_update")
+	private Timestamp lastUpdate;
 
-    public void setFilmId(long filmId) {
-        this.filmId = filmId;
-    }
+	//bi-directional many-to-one association to Film
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="film_id")
+	private Film film;
 
-    @Basic
-    @Column(name = "STORE_ID" , insertable=false, updatable=false)
-    public long getStoreId() {
-        return storeId;
-    }
+	//bi-directional many-to-one association to Store
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="store_id")
+	private Store store;
 
-    public void setStoreId(long storeId) {
-        this.storeId = storeId;
-    }
+	//bi-directional many-to-one association to Rental
+	@OneToMany(mappedBy="inventory")
+	private Set<Rental> rentals;
 
-    @Basic
-    @Column(name = "ACTIVE")
-    public boolean isActive() {
-        return active;
-    }
+	public Inventory() {
+	}
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+	public Long getInventoryId() {
+		return this.inventoryId;
+	}
 
-    @Basic
-    @Column(name = "LAST_UPDATE")
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
+	public void setInventoryId(Long inventoryId) {
+		this.inventoryId = inventoryId;
+	}
 
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+	public Boolean getActive() {
+		return this.active;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Inventory inventory = (Inventory) o;
-        return inventoryId == inventory.inventoryId &&
-                filmId == inventory.filmId &&
-                storeId == inventory.storeId &&
-                active == inventory.active &&
-                Objects.equals(lastUpdate, inventory.lastUpdate);
-    }
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(inventoryId, filmId, storeId, active, lastUpdate);
-    }
+	public Timestamp getLastUpdate() {
+		return this.lastUpdate;
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "FILM_ID", referencedColumnName = "FILM_ID", nullable = false)
-    public Film getFilmByFilmId() {
-        return filmByFilmId;
-    }
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
-    public void setFilmByFilmId(Film filmByFilmId) {
-        this.filmByFilmId = filmByFilmId;
-    }
+	public Film getFilm() {
+		return this.film;
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "STORE_ID", referencedColumnName = "STORE_ID", nullable = false)
-    public Store getStoreByStoreId() {
-        return storeByStoreId;
-    }
+	public void setFilm(Film film) {
+		this.film = film;
+	}
 
-    public void setStoreByStoreId(Store storeByStoreId) {
-        this.storeByStoreId = storeByStoreId;
-    }
+	public Store getStore() {
+		return this.store;
+	}
 
-    @OneToMany(mappedBy = "inventoryByInventoryId")
-    public Collection<Rental> getRentalsByInventoryId() {
-        return rentalsByInventoryId;
-    }
+	public void setStore(Store store) {
+		this.store = store;
+	}
 
-    public void setRentalsByInventoryId(Collection<Rental> rentalsByInventoryId) {
-        this.rentalsByInventoryId = rentalsByInventoryId;
-    }
+	public Set<Rental> getRentals() {
+		return this.rentals;
+	}
+
+	public void setRentals(Set<Rental> rentals) {
+		this.rentals = rentals;
+	}
+
+	public Rental addRental(Rental rental) {
+		getRentals().add(rental);
+		rental.setInventory(this);
+
+		return rental;
+	}
+
+	public Rental removeRental(Rental rental) {
+		getRentals().remove(rental);
+		rental.setInventory(null);
+
+		return rental;
+	}
+
 }

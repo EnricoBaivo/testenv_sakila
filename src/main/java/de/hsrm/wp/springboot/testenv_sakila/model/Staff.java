@@ -1,209 +1,232 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
-
-import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+
+
+/**
+ * The persistent class for the staff database table.
+ * 
+ */
 @Entity
-public class Staff {
-    private long staffId;
-    private String firstName;
-    private String lastName;
-    private long addressId;
-    private byte[] picture;
-    private String email;
-    private long storeId;
-    private boolean active;
-    private String username;
-    private String password;
-    private Timestamp lastUpdate;
-    private Collection<Payment> paymentsByStaffId;
-    private Collection<Rental> rentalsByStaffId;
-    private Address addressByAddressId;
-    private Store storeByStoreId;
-    private Collection<Store> storesByStaffId;
+@NamedQuery(name="Staff.findAll", query="SELECT s FROM Staff s")
+public class Staff implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "STAFF_ID")
-    public long getStaffId() {
-        return staffId;
-    }
+	@Id
+	@SequenceGenerator(name="STAFF_STAFFID_GENERATOR", sequenceName="STAFF_STAFF_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="STAFF_STAFFID_GENERATOR")
+	@Column(name="staff_id")
+	private Long staffId;
 
-    public void setStaffId(long staffId) {
-        this.staffId = staffId;
-    }
+	private Boolean active;
 
-    @Basic
-    @Column(name = "FIRST_NAME")
-    public String getFirstName() {
-        return firstName;
-    }
+	private String email;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	@Column(name="first_name")
+	private String firstName;
 
-    @Basic
-    @Column(name = "LAST_NAME")
-    public String getLastName() {
-        return lastName;
-    }
+	@Column(name="last_name")
+	private String lastName;
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	@Column(name="last_update")
+	private Timestamp lastUpdate;
 
-    @Basic
-    @Column(name = "ADDRESS_ID" , insertable=false, updatable=false)
-    public long getAddressId() {
-        return addressId;
-    }
+	private String password;
 
-    public void setAddressId(long addressId) {
-        this.addressId = addressId;
-    }
+	private byte[] picture;
 
-    @Basic
-    @Column(name = "PICTURE")
-    public byte[] getPicture() {
-        return picture;
-    }
+	private String username;
 
-    public void setPicture(byte[] picture) {
-        this.picture = picture;
-    }
+	//bi-directional many-to-one association to Payment
+	@OneToMany(mappedBy="staff")
+	private Set<Payment> payments;
 
-    @Basic
-    @Column(name = "EMAIL")
-    public String getEmail() {
-        return email;
-    }
+	//bi-directional many-to-one association to Rental
+	@OneToMany(mappedBy="staff")
+	private Set<Rental> rentals;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	//bi-directional many-to-one association to Address
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="address_id")
+	private Address address;
 
-    @Basic
-    @Column(name = "STORE_ID" , insertable=false, updatable=false)
-    public long getStoreId() {
-        return storeId;
-    }
+	//bi-directional many-to-one association to Store
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="store_id")
+	private Store store;
 
-    public void setStoreId(long storeId) {
-        this.storeId = storeId;
-    }
+	//bi-directional many-to-one association to Store
+	@OneToMany(mappedBy="staff")
+	private Set<Store> stores;
 
-    @Basic
-    @Column(name = "ACTIVE")
-    public boolean isActive() {
-        return active;
-    }
+	public Staff() {
+	}
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+	public Long getStaffId() {
+		return this.staffId;
+	}
 
-    @Basic
-    @Column(name = "USERNAME")
-    public String getUsername() {
-        return username;
-    }
+	public void setStaffId(Long staffId) {
+		this.staffId = staffId;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public Boolean getActive() {
+		return this.active;
+	}
 
-    @Basic
-    @Column(name = "PASSWORD")
-    public String getPassword() {
-        return password;
-    }
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getEmail() {
+		return this.email;
+	}
 
-    @Basic
-    @Column(name = "LAST_UPDATE")
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+	public String getFirstName() {
+		return this.firstName;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Staff staff = (Staff) o;
-        return staffId == staff.staffId &&
-                addressId == staff.addressId &&
-                storeId == staff.storeId &&
-                active == staff.active &&
-                Objects.equals(firstName, staff.firstName) &&
-                Objects.equals(lastName, staff.lastName) &&
-                Arrays.equals(picture, staff.picture) &&
-                Objects.equals(email, staff.email) &&
-                Objects.equals(username, staff.username) &&
-                Objects.equals(password, staff.password) &&
-                Objects.equals(lastUpdate, staff.lastUpdate);
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(staffId, firstName, lastName, addressId, email, storeId, active, username, password, lastUpdate);
-        result = 31 * result + Arrays.hashCode(picture);
-        return result;
-    }
+	public String getLastName() {
+		return this.lastName;
+	}
 
-    @OneToMany(mappedBy = "staffByStaffId")
-    public Collection<Payment> getPaymentsByStaffId() {
-        return paymentsByStaffId;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public void setPaymentsByStaffId(Collection<Payment> paymentsByStaffId) {
-        this.paymentsByStaffId = paymentsByStaffId;
-    }
+	public Timestamp getLastUpdate() {
+		return this.lastUpdate;
+	}
 
-    @OneToMany(mappedBy = "staffByStaffId")
-    public Collection<Rental> getRentalsByStaffId() {
-        return rentalsByStaffId;
-    }
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
-    public void setRentalsByStaffId(Collection<Rental> rentalsByStaffId) {
-        this.rentalsByStaffId = rentalsByStaffId;
-    }
+	public String getPassword() {
+		return this.password;
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ADDRESS_ID", nullable = false)
-    public Address getAddressByAddressId() {
-        return addressByAddressId;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setAddressByAddressId(Address addressByAddressId) {
-        this.addressByAddressId = addressByAddressId;
-    }
+	public byte[] getPicture() {
+		return this.picture;
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "STORE_ID", referencedColumnName = "STORE_ID", nullable = false)
-    public Store getStoreByStoreId() {
-        return storeByStoreId;
-    }
+	public void setPicture(byte[] picture) {
+		this.picture = picture;
+	}
 
-    public void setStoreByStoreId(Store storeByStoreId) {
-        this.storeByStoreId = storeByStoreId;
-    }
+	public String getUsername() {
+		return this.username;
+	}
 
-    @OneToMany(mappedBy = "staffByManagerStaffId")
-    public Collection<Store> getStoresByStaffId() {
-        return storesByStaffId;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setStoresByStaffId(Collection<Store> storesByStaffId) {
-        this.storesByStaffId = storesByStaffId;
-    }
+	public Set<Payment> getPayments() {
+		return this.payments;
+	}
+
+	public void setPayments(Set<Payment> payments) {
+		this.payments = payments;
+	}
+
+	public Payment addPayment(Payment payment) {
+		getPayments().add(payment);
+		payment.setStaff(this);
+
+		return payment;
+	}
+
+	public Payment removePayment(Payment payment) {
+		getPayments().remove(payment);
+		payment.setStaff(null);
+
+		return payment;
+	}
+
+	public Set<Rental> getRentals() {
+		return this.rentals;
+	}
+
+	public void setRentals(Set<Rental> rentals) {
+		this.rentals = rentals;
+	}
+
+	public Rental addRental(Rental rental) {
+		getRentals().add(rental);
+		rental.setStaff(this);
+
+		return rental;
+	}
+
+	public Rental removeRental(Rental rental) {
+		getRentals().remove(rental);
+		rental.setStaff(null);
+
+		return rental;
+	}
+
+	public Address getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public Store getStore() {
+		return this.store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
+	}
+
+	public Set<Store> getStores() {
+		return this.stores;
+	}
+
+	public void setStores(Set<Store> stores) {
+		this.stores = stores;
+	}
+
+	public Store addStore(Store store) {
+		getStores().add(store);
+		store.setStaff(this);
+
+		return store;
+	}
+
+	public Store removeStore(Store store) {
+		getStores().remove(store);
+		store.setStaff(null);
+
+		return store;
+	}
+
 }

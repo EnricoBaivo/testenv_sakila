@@ -1,68 +1,76 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
 
-import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+
+
+/**
+ * The persistent class for the category database table.
+ * 
+ */
 @Entity
-public class Category {
-    private long categoryId;
-    private String name;
-    private Timestamp lastUpdate;
-    private Set<Film> films;
+@NamedQuery(name="Category.findAll", query="SELECT c FROM Category c")
+public class Category implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "CATEGORY_ID")
-    public long getCategoryId() {
-        return categoryId;
-    }
+	@Id
+	@SequenceGenerator(name="CATEGORY_CATEGORYID_GENERATOR", sequenceName="CATEGORY_CATEGORY_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CATEGORY_CATEGORYID_GENERATOR")
+	@Column(name="category_id")
+	private Long categoryId;
 
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
-    }
+	@Column(name="last_update")
+	private Timestamp lastUpdate;
 
-    @Basic
-    @Column(name = "NAME")
-    public String getName() {
-        return name;
-    }
+	private String name;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	//bi-directional many-to-many association to Film
+	@ManyToMany(mappedBy="categories")
+	private Set<Film> films;
 
-    @Basic
-    @Column(name = "LAST_UPDATE")
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
+	public Category() {
+	}
 
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+	public Long getCategoryId() {
+		return this.categoryId;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-        return categoryId == category.categoryId &&
-                Objects.equals(name, category.name) &&
-                Objects.equals(lastUpdate, category.lastUpdate);
-    }
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(categoryId, name, lastUpdate);
-    }
+	public Timestamp getLastUpdate() {
+		return this.lastUpdate;
+	}
 
-    @ManyToMany(mappedBy = "categories")
-    public Set<Film> getFilms() {
-        return films;
-    }
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
-    public void setFilms(Set<Film> films) {
-        this.films = films;
-    }
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<Film> getFilms() {
+		return this.films;
+	}
+
+	public void setFilms(Set<Film> films) {
+		this.films = films;
+	}
+
 }

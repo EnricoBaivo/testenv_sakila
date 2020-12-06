@@ -1,78 +1,114 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
-
-import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+
+/**
+ * The persistent class for the language database table.
+ * 
+ */
 @Entity
-public class Language {
-    private long languageId;
-    private String name;
-    private Timestamp lastUpdate;
-    private Collection<Film> filmsByLanguageId;
-    private Collection<Film> filmsByLanguageId_0;
+@NamedQuery(name = "Language.findAll", query = "SELECT l FROM Language l")
+public class Language implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "LANGUAGE_ID")
-    public long getLanguageId() {
-        return languageId;
-    }
+	@Id
+	@SequenceGenerator(name = "LANGUAGE_LANGUAGEID_GENERATOR", sequenceName = "LANGUAGE_LANGUAGE_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LANGUAGE_LANGUAGEID_GENERATOR")
+	@Column(name = "language_id")
+	private Long languageId;
 
-    public void setLanguageId(long languageId) {
-        this.languageId = languageId;
-    }
+	@Column(name = "last_update")
+	private Timestamp lastUpdate;
 
-    @Basic
-    @Column(name = "NAME")
-    public String getName() {
-        return name;
-    }
+	private String name;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	// bi-directional many-to-one association to Film
+	@OneToMany(mappedBy = "language")
+	private Set<Film> films;
 
-    @Basic
-    @Column(name = "LAST_UPDATE")
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
+	// bi-directional many-to-one association to Film
+	@OneToMany(mappedBy = "originalLanguage")
+	private Set<Film> filmsInOriginalLanguage;
 
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+	public Language() {
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Language language = (Language) o;
-        return languageId == language.languageId &&
-                Objects.equals(name, language.name) &&
-                Objects.equals(lastUpdate, language.lastUpdate);
-    }
+	public Long getLanguageId() {
+		return this.languageId;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(languageId, name, lastUpdate);
-    }
+	public void setLanguageId(Long languageId) {
+		this.languageId = languageId;
+	}
 
-    @OneToMany(mappedBy = "languageByLanguageId")
-    public Collection<Film> getFilmsByLanguageId() {
-        return filmsByLanguageId;
-    }
+	public Timestamp getLastUpdate() {
+		return this.lastUpdate;
+	}
 
-    public void setFilmsByLanguageId(Collection<Film> filmsByLanguageId) {
-        this.filmsByLanguageId = filmsByLanguageId;
-    }
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
-    @OneToMany(mappedBy = "languageByOriginalLanguageId")
-    public Collection<Film> getFilmsByLanguageId_0() {
-        return filmsByLanguageId_0;
-    }
+	public String getName() {
+		return this.name;
+	}
 
-    public void setFilmsByLanguageId_0(Collection<Film> filmsByLanguageId_0) {
-        this.filmsByLanguageId_0 = filmsByLanguageId_0;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<Film> getFilms() {
+		return this.films;
+	}
+
+	public void setFilms(Set<Film> films) {
+		this.films = films;
+	}
+
+	public Film addFilms(Film films) {
+		getFilms().add(films);
+		films.setLanguage(this);
+
+		return films;
+	}
+
+	public Film removeFilms1(Film films) {
+		getFilms().remove(films);
+		films.setLanguage(null);
+
+		return films;
+	}
+
+	public Set<Film> getFilmsInOriginalLanguage() {
+		return this.filmsInOriginalLanguage;
+	}
+
+	public void setFilmsInOriginalLanguage(Set<Film> filmsInOriginalLanguage) {
+		this.filmsInOriginalLanguage = filmsInOriginalLanguage;
+	}
+
+	public Film addFilmsInOriginalLanguage(Film filmsInOriginalLanguage) {
+		getFilmsInOriginalLanguage().add(filmsInOriginalLanguage);
+		filmsInOriginalLanguage.setOriginalLanguage(this);
+
+		return filmsInOriginalLanguage;
+	}
+
+	public Film removeFilmsInOriginalLanguage(Film filmsInOriginalLanguage) {
+		getFilmsInOriginalLanguage().remove(filmsInOriginalLanguage);
+		filmsInOriginalLanguage.setOriginalLanguage(null);
+
+		return filmsInOriginalLanguage;
+	}
+
 }
