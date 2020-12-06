@@ -1,8 +1,8 @@
-#Documentation für die Repositroys 
+# Documentation für die Repositroys 
 **Sakiladatenbankschema Bild**
 
 ![Sakiladatenbankschema](https://www.jooq.org/img/sakila.png)
-##Meine abgebildeten Usecases
+## Meine abgebildeten Usecases
 
 ### Usecases
 1. Kunde fragt den aktuell ausleihbaren (also nicht bereits verliehenen) Bestand in in seinem lokalen Store ab - in einer Paging Query, Sortierkriterien (Attribut und aufsteigend/absteigend) als Input-Parameter abfragen, z.B. Erscheinungsjahr DESC, Anzahl vorheriger Ausleihen DESC, Länge ASC
