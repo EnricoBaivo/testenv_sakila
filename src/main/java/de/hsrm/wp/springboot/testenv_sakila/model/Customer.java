@@ -1,5 +1,5 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
-import java.io.Serializable;
+
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -11,58 +11,53 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-
 
 /**
  * The persistent class for the customer database table.
  * 
  */
 @Entity
-@NamedQuery(name="Customer.findAll", query="SELECT c FROM Customer c")
-public class Customer implements Serializable {
+public class Customer extends AbstractBaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="CUSTOMER_CUSTOMERID_GENERATOR", sequenceName="CUSTOMER_CUSTOMER_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CUSTOMER_CUSTOMERID_GENERATOR")
-	@Column(name="customer_id")
+	@SequenceGenerator(name = "CUSTOMER_CUSTOMERID_GENERATOR", sequenceName = "CUSTOMER_CUSTOMER_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUSTOMER_CUSTOMERID_GENERATOR")
+	@Column(name = "customer_id")
 	private Long customerId;
 
 	private Boolean active;
 
-	@Column(name="create_date")
+	@Column(name = "create_date")
 	private Timestamp createDate;
 
 	private String email;
 
-	@Column(name="first_name")
+	@Column(name = "first_name")
 	private String firstName;
 
-	@Column(name="last_name")
+	@Column(name = "last_name")
 	private String lastName;
 
-	@Column(name="last_update")
-	private Timestamp lastUpdate;
-
-	//bi-directional many-to-one association to Address
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="address_id")
+	// bi-directional many-to-one association to Address
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id")
 	private Address address;
 
-	//bi-directional many-to-one association to Store
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="store_id")
+	// bi-directional many-to-one association to Store
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "store_id")
 	private Store store;
 
-	//bi-directional many-to-one association to Payment
-	@OneToMany(mappedBy="customer")
+	// bi-directional many-to-one association to Payment
+	@OneToMany(mappedBy = "customer")
 	private Set<Payment> payments;
 
-	//bi-directional many-to-one association to Rental
-	@OneToMany(mappedBy="customer")
+	// bi-directional many-to-one association to Rental
+	@OneToMany(mappedBy = "customer")
 	private Set<Rental> rentals;
 
 	public Customer() {
@@ -114,14 +109,6 @@ public class Customer implements Serializable {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public Timestamp getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
 	}
 
 	public Address getAddress() {

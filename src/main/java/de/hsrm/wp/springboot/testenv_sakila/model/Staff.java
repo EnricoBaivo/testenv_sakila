@@ -1,6 +1,5 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
-import java.io.Serializable;
-import java.sql.Timestamp;
+
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -11,38 +10,33 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-
 
 /**
  * The persistent class for the staff database table.
  * 
  */
 @Entity
-@NamedQuery(name="Staff.findAll", query="SELECT s FROM Staff s")
-public class Staff implements Serializable {
+public class Staff extends AbstractBaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="STAFF_STAFFID_GENERATOR", sequenceName="STAFF_STAFF_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="STAFF_STAFFID_GENERATOR")
-	@Column(name="staff_id")
+	@SequenceGenerator(name = "STAFF_STAFFID_GENERATOR", sequenceName = "STAFF_STAFF_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STAFF_STAFFID_GENERATOR")
+	@Column(name = "staff_id")
 	private Long staffId;
 
 	private Boolean active;
 
 	private String email;
 
-	@Column(name="first_name")
+	@Column(name = "first_name")
 	private String firstName;
 
-	@Column(name="last_name")
+	@Column(name = "last_name")
 	private String lastName;
-
-	@Column(name="last_update")
-	private Timestamp lastUpdate;
 
 	private String password;
 
@@ -50,26 +44,26 @@ public class Staff implements Serializable {
 
 	private String username;
 
-	//bi-directional many-to-one association to Payment
-	@OneToMany(mappedBy="staff")
+	// bi-directional many-to-one association to Payment
+	@OneToMany(mappedBy = "staff")
 	private Set<Payment> payments;
 
-	//bi-directional many-to-one association to Rental
-	@OneToMany(mappedBy="staff")
+	// bi-directional many-to-one association to Rental
+	@OneToMany(mappedBy = "staff")
 	private Set<Rental> rentals;
 
-	//bi-directional many-to-one association to Address
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="address_id")
+	// bi-directional many-to-one association to Address
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id")
 	private Address address;
 
-	//bi-directional many-to-one association to Store
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="store_id")
+	// bi-directional many-to-one association to Store
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "store_id")
 	private Store store;
 
-	//bi-directional many-to-one association to Store
-	@OneToMany(mappedBy="staff")
+	// bi-directional many-to-one association to Store
+	@OneToMany(mappedBy = "staff")
 	private Set<Store> stores;
 
 	public Staff() {
@@ -113,14 +107,6 @@ public class Staff implements Serializable {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public Timestamp getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
 	}
 
 	public String getPassword() {

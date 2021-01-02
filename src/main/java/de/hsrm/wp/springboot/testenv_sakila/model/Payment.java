@@ -1,5 +1,5 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
-import java.io.Serializable;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -11,46 +11,41 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
-
 
 /**
  * The persistent class for the payment database table.
  * 
  */
 @Entity
-@NamedQuery(name="Payment.findAll", query="SELECT p FROM Payment p")
-public class Payment implements Serializable {
+public class Payment extends AbstractBaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PAYMENT_PAYMENTID_GENERATOR", sequenceName="PAYMENT_PAYMENT_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAYMENT_PAYMENTID_GENERATOR")
-	@Column(name="payment_id")
+	@SequenceGenerator(name = "PAYMENT_PAYMENTID_GENERATOR", sequenceName = "PAYMENT_PAYMENT_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAYMENT_PAYMENTID_GENERATOR")
+	@Column(name = "payment_id")
 	private Long paymentId;
 
 	private BigDecimal amount;
 
-	@Column(name="last_update")
-	private Timestamp lastUpdate;
-
-	@Column(name="payment_date")
+	@Column(name = "payment_date")
 	private Timestamp paymentDate;
 
-	//bi-directional many-to-one association to Customer
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="customer_id")
+	// bi-directional many-to-one association to Customer
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
-	//bi-directional many-to-one association to Rental
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="rental_id")
+	// bi-directional many-to-one association to Rental
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "rental_id")
 	private Rental rental;
 
-	//bi-directional many-to-one association to Staff
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="staff_id")
+	// bi-directional many-to-one association to Staff
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "staff_id")
 	private Staff staff;
 
 	public Payment() {
@@ -70,14 +65,6 @@ public class Payment implements Serializable {
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
-	}
-
-	public Timestamp getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
 	}
 
 	public Timestamp getPaymentDate() {

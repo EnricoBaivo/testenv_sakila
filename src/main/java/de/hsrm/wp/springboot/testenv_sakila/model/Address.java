@@ -1,7 +1,5 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,24 +10,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-
 
 /**
  * The persistent class for the address database table.
  * 
  */
 @Entity
-@NamedQuery(name="Address.findAll", query="SELECT a FROM Address a")
-public class Address implements Serializable {
+public class Address extends AbstractBaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="ADDRESS_ADDRESSID_GENERATOR", sequenceName="ADDRESS_ADDRESS_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ADDRESS_ADDRESSID_GENERATOR")
-	@Column(name="address_id")
+	@SequenceGenerator(name = "ADDRESS_ADDRESSID_GENERATOR", sequenceName = "ADDRESS_ADDRESS_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ADDRESS_ADDRESSID_GENERATOR")
+	@Column(name = "address_id")
 	private Long addressId;
 
 	private String address;
@@ -38,29 +34,26 @@ public class Address implements Serializable {
 
 	private String district;
 
-	@Column(name="last_update")
-	private Timestamp lastUpdate;
-
 	private String phone;
 
-	@Column(name="postal_code")
+	@Column(name = "postal_code")
 	private String postalCode;
 
-	//bi-directional many-to-one association to City
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="city_id")
+	// bi-directional many-to-one association to City
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "city_id")
 	private City city;
 
-	//bi-directional many-to-one association to Customer
-	@OneToMany(mappedBy="address")
+	// bi-directional many-to-one association to Customer
+	@OneToMany(mappedBy = "address")
 	private Set<Customer> customers;
 
-	//bi-directional many-to-one association to Staff
-	@OneToMany(mappedBy="address")
+	// bi-directional many-to-one association to Staff
+	@OneToMany(mappedBy = "address")
 	private Set<Staff> staffs;
 
-	//bi-directional many-to-one association to Store
-	@OneToMany(mappedBy="address")
+	// bi-directional many-to-one association to Store
+	@OneToMany(mappedBy = "address")
 	private Set<Store> stores;
 
 	public Address() {
@@ -96,14 +89,6 @@ public class Address implements Serializable {
 
 	public void setDistrict(String district) {
 		this.district = district;
-	}
-
-	public Timestamp getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
 	}
 
 	public String getPhone() {

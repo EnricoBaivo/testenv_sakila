@@ -1,6 +1,5 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
-import java.io.Serializable;
-import java.sql.Timestamp;
+
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -8,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
@@ -17,8 +15,8 @@ import javax.persistence.SequenceGenerator;
  * 
  */
 @Entity
-@NamedQuery(name = "Language.findAll", query = "SELECT l FROM Language l")
-public class Language implements Serializable {
+public class Language extends AbstractBaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -26,9 +24,6 @@ public class Language implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LANGUAGE_LANGUAGEID_GENERATOR")
 	@Column(name = "language_id")
 	private Long languageId;
-
-	@Column(name = "last_update")
-	private Timestamp lastUpdate;
 
 	private String name;
 
@@ -49,14 +44,6 @@ public class Language implements Serializable {
 
 	public void setLanguageId(Long languageId) {
 		this.languageId = languageId;
-	}
-
-	public Timestamp getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
 	}
 
 	public String getName() {

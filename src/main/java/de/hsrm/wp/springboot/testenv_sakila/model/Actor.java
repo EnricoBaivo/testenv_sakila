@@ -1,7 +1,5 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -10,36 +8,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
-
 
 /**
  * The persistent class for the actor database table.
  * 
  */
 @Entity
-@NamedQuery(name="Actor.findAll", query="SELECT a FROM Actor a")
-public class Actor implements Serializable {
+public class Actor extends AbstractBaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="ACTOR_ACTORID_GENERATOR", sequenceName="ACTOR_ACTOR_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ACTOR_ACTORID_GENERATOR")
-	@Column(name="actor_id")
+	@SequenceGenerator(name = "ACTOR_ACTORID_GENERATOR", sequenceName = "ACTOR_ACTOR_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ACTOR_ACTORID_GENERATOR")
+	@Column(name = "actor_id")
 	private Long actorId;
 
-	@Column(name="first_name")
+	@Column(name = "first_name")
 	private String firstName;
 
-	@Column(name="last_name")
+	@Column(name = "last_name")
 	private String lastName;
 
-	@Column(name="last_update")
-	private Timestamp lastUpdate;
-
-	//bi-directional many-to-many association to Film
-	@ManyToMany(mappedBy="actors")
+	// bi-directional many-to-many association to Film
+	@ManyToMany(mappedBy = "actors")
 	private Set<Film> films;
 
 	public Actor() {
@@ -67,14 +60,6 @@ public class Actor implements Serializable {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public Timestamp getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
 	}
 
 	public Set<Film> getFilms() {

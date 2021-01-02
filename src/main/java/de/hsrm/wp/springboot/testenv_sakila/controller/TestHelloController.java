@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @ResponseBody
 // every Request lives under root/trolling/...
 @RequestMapping("trolling")
-public class HelloController {
+public class TestHelloController {
 
     //    Handles request at path party
     //    @GetMapping("party")

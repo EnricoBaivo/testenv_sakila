@@ -1,6 +1,5 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
-import java.io.Serializable;
-import java.sql.Timestamp;
+
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -11,38 +10,33 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-
 
 /**
  * The persistent class for the city database table.
  * 
  */
 @Entity
-@NamedQuery(name="City.findAll", query="SELECT c FROM City c")
-public class City implements Serializable {
+public class City extends AbstractBaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="CITY_CITYID_GENERATOR", sequenceName="CITY_CITY_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CITY_CITYID_GENERATOR")
-	@Column(name="city_id")
+	@SequenceGenerator(name = "CITY_CITYID_GENERATOR", sequenceName = "CITY_CITY_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CITY_CITYID_GENERATOR")
+	@Column(name = "city_id")
 	private Long cityId;
 
 	private String city;
 
-	@Column(name="last_update")
-	private Timestamp lastUpdate;
-
-	//bi-directional many-to-one association to Address
-	@OneToMany(mappedBy="city")
+	// bi-directional many-to-one association to Address
+	@OneToMany(mappedBy = "city")
 	private Set<Address> addresses;
 
-	//bi-directional many-to-one association to Country
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="country_id")
+	// bi-directional many-to-one association to Country
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "country_id")
 	private Country country;
 
 	public City() {
@@ -62,14 +56,6 @@ public class City implements Serializable {
 
 	public void setCity(String city) {
 		this.city = city;
-	}
-
-	public Timestamp getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
 	}
 
 	public Set<Address> getAddresses() {

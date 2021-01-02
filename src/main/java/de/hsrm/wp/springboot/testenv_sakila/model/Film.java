@@ -1,7 +1,6 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
-import java.io.Serializable;
+
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,92 +11,76 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-
 
 /**
  * The persistent class for the film database table.
  * 
  */
 @Entity
-@NamedQuery(name="Film.findAll", query="SELECT f FROM Film f")
-public class Film implements Serializable {
+public class Film extends AbstractBaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="FILM_FILMID_GENERATOR", sequenceName="FILM_FILM_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="FILM_FILMID_GENERATOR")
-	@Column(name="film_id")
+	@SequenceGenerator(name = "FILM_FILMID_GENERATOR", sequenceName = "FILM_FILM_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FILM_FILMID_GENERATOR")
+	@Column(name = "film_id")
 	private Long filmId;
 
+	@Lob
 	private String description;
-
-	@Column(name="last_update")
-	private Timestamp lastUpdate;
 
 	private Long length;
 
 	private String rating;
 
-	@Column(name="release_year")
+	@Column(name = "release_year")
 	private Integer releaseYear;
 
-	@Column(name="rental_duration")
+	@Column(name = "rental_duration")
 	private Long rentalDuration;
 
-	@Column(name="rental_rate")
+	@Column(name = "rental_rate")
 	private BigDecimal rentalRate;
 
-	@Column(name="replacement_cost")
+	@Column(name = "replacement_cost")
 	private BigDecimal replacementCost;
 
-	@Column(name="special_features")
+	@Lob
+	@Column(name = "special_features")
 	private String specialFeatures;
 
 	private String title;
 
-	//bi-directional many-to-one association to Language
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="language_id")
+	// bi-directional many-to-one association to Language
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "language_id")
 	private Language language;
 
-	//bi-directional many-to-one association to Language
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="original_language_id")
+	// bi-directional many-to-one association to Language
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "original_language_id")
 	private Language originalLanguage;
 
-	//bi-directional many-to-one association to Inventory
-	@OneToMany(mappedBy="film")
+	// bi-directional many-to-one association to Inventory
+	@OneToMany(mappedBy = "film")
 	private Set<Inventory> inventories;
 
-	//bi-directional many-to-many association to Actor
+	// bi-directional many-to-many association to Actor
 	@ManyToMany
-	@JoinTable(
-		name="film_actor"
-		, joinColumns={
-			@JoinColumn(name="film_id")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="actor_id")
-			}
-		)
+	@JoinTable(name = "film_actor", joinColumns = { @JoinColumn(name = "film_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "actor_id") })
 	private Set<Actor> actors;
 
-	//bi-directional many-to-many association to Category
+	// bi-directional many-to-many association to Category
 	@ManyToMany
-	@JoinTable(
-		name="film_category"
-		, joinColumns={
-			@JoinColumn(name="film_id")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="category_id")
-			}
-		)
+	@JoinTable(name = "film_category", joinColumns = { @JoinColumn(name = "film_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "category_id") })
 	private Set<Category> categories;
 
 	public Film() {
@@ -117,14 +100,6 @@ public class Film implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Timestamp getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
 	}
 
 	public Long getLength() {

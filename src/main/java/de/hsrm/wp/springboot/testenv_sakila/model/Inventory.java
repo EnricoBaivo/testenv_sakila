@@ -1,6 +1,5 @@
 package de.hsrm.wp.springboot.testenv_sakila.model;
-import java.io.Serializable;
-import java.sql.Timestamp;
+
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -11,43 +10,38 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-
 
 /**
  * The persistent class for the inventory database table.
  * 
  */
 @Entity
-@NamedQuery(name="Inventory.findAll", query="SELECT i FROM Inventory i")
-public class Inventory implements Serializable {
+public class Inventory extends AbstractBaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="INVENTORY_INVENTORYID_GENERATOR", sequenceName="INVENTORY_INVENTORY_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="INVENTORY_INVENTORYID_GENERATOR")
-	@Column(name="inventory_id")
+	@SequenceGenerator(name = "INVENTORY_INVENTORYID_GENERATOR", sequenceName = "INVENTORY_INVENTORY_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INVENTORY_INVENTORYID_GENERATOR")
+	@Column(name = "inventory_id")
 	private Long inventoryId;
 
 	private Boolean active;
 
-	@Column(name="last_update")
-	private Timestamp lastUpdate;
-
-	//bi-directional many-to-one association to Film
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="film_id")
+	// bi-directional many-to-one association to Film
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "film_id")
 	private Film film;
 
-	//bi-directional many-to-one association to Store
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="store_id")
+	// bi-directional many-to-one association to Store
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "store_id")
 	private Store store;
 
-	//bi-directional many-to-one association to Rental
-	@OneToMany(mappedBy="inventory")
+	// bi-directional many-to-one association to Rental
+	@OneToMany(mappedBy = "inventory")
 	private Set<Rental> rentals;
 
 	public Inventory() {
@@ -67,14 +61,6 @@ public class Inventory implements Serializable {
 
 	public void setActive(Boolean active) {
 		this.active = active;
-	}
-
-	public Timestamp getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
 	}
 
 	public Film getFilm() {
